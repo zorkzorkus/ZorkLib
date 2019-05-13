@@ -14,6 +14,7 @@ Main development is done privately on TFS. Occasionally a new version will be po
 #### Future Plans
 * GUI elements such as buttons, drop-down lists, auto scaling plots.
 * Sound using XAudio2.
+* Networking using boost::asio.
 * Anything that is frequently used and has to be programmed again or copied over.
 * Partly port to linux.
 
@@ -21,7 +22,7 @@ Main development is done privately on TFS. Occasionally a new version will be po
 * Because of the direct usage of WinAPI and DirectX, this library only works on Windows. Ports to other platforms is unlikely.
 * Code is unfinished and often a mess ;)
 * Much functionality is still missing.
-* Some things may be desiged poorly and will be altered when this is a problem.
+* Some things may be designed poorly and will be altered when it becomes a problem.
 
 #### Example
 
