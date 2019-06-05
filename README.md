@@ -11,6 +11,11 @@ Main development is done privately on TFS. Occasionally a new version will be po
 * ZorkUtility
 	* Utility functions such as getting files from a directory, or string manipulation.
 
+#### Requirements
+* Windows (preferably 10)
+* for ZorkLibUSB: [libusb](https://github.com/libusb/libusb)
+
+
 #### Future Plans
 * GUI elements such as buttons, drop-down lists, auto scaling plots.
 * Sound using XAudio2.
