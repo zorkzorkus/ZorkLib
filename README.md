@@ -3,11 +3,11 @@ C++ Wrapper Library for WinAPI, Direct2D, GUIs and often used functionality. Qui
 This library is work in progress and will often change existing parts. Developed using Visual Studio 2019.
 
 #### Features
-* ZorkLibWindow 
+* ZorkLib/Window 
 	* Create a Window that provides a KeyDown, MouseDown framework with simplified Direct2D rendering. Allows access to underlying functionality.
 * ZorkLibUSB
 	* Easier access to USB devices using **libusb**. Supports opening device via VID, PID, Serial Number. Writing and reading data through control and bulk transactions.
-* ZorkUtility
+* ZorkLib/Utility
 	* Utility functions such as getting files from a directory, or string manipulation.
 
 #### Requirements
