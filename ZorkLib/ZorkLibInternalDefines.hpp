@@ -7,7 +7,9 @@
 #pragma comment(lib, "dwrite")
 #pragma comment(lib, "Shlwapi")
 
+#ifndef UNICODE
 #define UNICODE
+#endif
 
 //Windows Header
 #include <Windows.h>
@@ -20,6 +22,7 @@
 #include <Shlwapi.h>
 
 #include <memory>
+#include <string>
 
 #undef PlaySound
 #undef LoadBitmap

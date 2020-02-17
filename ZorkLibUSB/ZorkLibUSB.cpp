@@ -44,16 +44,19 @@ namespace ZorkLib {
 	}
 
 	USBDevice& USBDevice::operator=(const USBDevice * other) {
+		// TODO: ?
 		USBDevice retValue(other);
 		return retValue;
 	}
 
 	USBDevice& USBDevice::operator=(const USBDevice & other) {
+		// TODO: ?
 		USBDevice retValue(other);
 		return retValue;
 	}
 
 	INT32 USBDevice::ControlTransfer() {
+		// TODO
 		return INT32();
 	}
 
@@ -101,13 +104,17 @@ namespace ZorkLib {
 		}
 
 		for (ssize_t i = 0; i < deviceListLength; ++i) {
-			libusb_get_device_descriptor(deviceList[i], &m_DeviceDesc);
+			if (libusb_get_device_descriptor(deviceList[i], &m_DeviceDesc) < 0) {
+				continue;
+			}
 			uint8_t buffer[64];
 			libusb_device_handle* pHandle;
 			if (libusb_open(deviceList[i], &pHandle) < 0) {
 				continue;
 			}
-			libusb_get_string_descriptor(pHandle, m_DeviceDesc.iSerialNumber, 0, buffer, 64);
+			if (libusb_get_string_descriptor(pHandle, m_DeviceDesc.iSerialNumber, 0, buffer, 64) < 0) {
+				continue;
+			}
 			uint8_t stringLength = buffer[0];
 			memset(buffer + stringLength, 0, 64 - stringLength);
 			std::wstring serialFromBuffer(reinterpret_cast<const wchar_t*>(buffer + 2));

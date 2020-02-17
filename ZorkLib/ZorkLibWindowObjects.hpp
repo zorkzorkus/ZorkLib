@@ -42,6 +42,9 @@ namespace ZorkLib {
 		// Operators
 		Point operator+(const Point& other);
 		Point& operator+=(const Point& other);
+		Point operator-();
+		Point operator-(const Point& other);
+		Point& operator-=(const Point& other);
 
 	public:
 
@@ -77,6 +80,8 @@ namespace ZorkLib {
 		// Operators
 		Line operator+(const Point& point);
 		Line& operator+=(const Point& point);
+		Line operator-(const Point& point);
+		Line& operator-=(const Point& point);
 
 	public:
 
@@ -122,6 +127,8 @@ namespace ZorkLib {
 		// Operators
 		Rectangle operator+(const Point& point);
 		Rectangle& operator+=(const Point& point);
+		Rectangle operator-(const Point& point);
+		Rectangle& operator-=(const Point& point);
 
 	public:
 
@@ -168,6 +175,8 @@ namespace ZorkLib {
 		// Operators
 		Ellipse operator+(const Point& point);
 		Ellipse& operator+=(const Point& point);
+		Ellipse operator-(const Point& point);
+		Ellipse& operator-=(const Point& point);
 
 
 	public:
@@ -202,8 +211,7 @@ namespace ZorkLib {
 		Marine = 0xFF0000FF,
 		Purple = 0xFF7F00FF,
 		Magenta = 0xFFFF00FF,
-		Brown = 0xFF7F3F00,
-		NR_OF_COLORS,
+		Brown = 0xFF7F3F00
 	};
 
 	class Color {
@@ -224,6 +232,8 @@ namespace ZorkLib {
 		Color& operator+=(const Color& other);
 		Color operator*(const Color& other);
 		Color& operator*=(const Color& other);
+		Color operator*(const float& scale);
+		Color& operator*=(const float& scale);
 
 		UINT32 GetHex();
 

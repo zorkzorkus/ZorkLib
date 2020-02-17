@@ -40,6 +40,25 @@ namespace ZorkLib {
 		return *this;
 	}
 
+	Point Point::operator-() {
+		Point result;
+		result.x = -this->x;
+		result.y = -this->y;
+		return result;
+	}
+
+	Point Point::operator-(const Point& other) {
+		Point result = this;
+		result -= other;
+		return result;
+	}
+
+	Point& Point::operator-=(const Point& other) {
+		x -= other.x;
+		y -= other.y;
+		return *this;
+	}
+
 	// -----------
 	// struct Line
 	// -----------
@@ -80,6 +99,18 @@ namespace ZorkLib {
 		return *this;
 	}
 
+	Line Line::operator-(const Point& point) {
+		Line ret = this;
+		ret -= point;
+		return ret;
+	}
+
+	Line& Line::operator-=(const Point& point) {
+		a -= point;
+		b -= point;
+		return *this;
+	}
+
 	// ----------------
 	// struct Rectangle
 	// ----------------
@@ -102,14 +133,25 @@ namespace ZorkLib {
 		return D2D1::RectF(left, top, right, bottom);
 	}
 
-	Rectangle Rectangle::operator+(const Point & point) {
+	Rectangle Rectangle::operator+(const Point& point) {
 		Rectangle result = this;
 		result += point;
 		return result;
 	}
 
-	Rectangle & Rectangle::operator+=(const Point & point) {
+	Rectangle& Rectangle::operator+=(const Point& point) {
 		Move(point.x, point.y);
+		return *this;
+	}
+
+	Rectangle Rectangle::operator-(const Point& point) {
+		Rectangle result = this;
+		result -= point;
+		return result;
+	}
+
+	Rectangle& Rectangle::operator-=(const Point& point) {
+		Move(-point.x, -point.y);
 		return *this;
 	}
 
@@ -244,8 +286,19 @@ namespace ZorkLib {
 		return *this;
 	}
 
+	Ellipse Ellipse::operator-(const Point& point) {
+		Ellipse ret = this;
+		ret -= point;
+		return ret;
+	}
+
+	Ellipse& Ellipse::operator-=(const Point& point) {
+		center -= point;
+		return *this;
+	}
+
 	// -----------
-	// class Color
+	// class Color (RGB)
 	// -----------
 
 	Color::Color() : m_Red(0.f), m_Green(0.f), m_Blue(0.f), m_Alpha(0.f) {}
@@ -291,6 +344,19 @@ namespace ZorkLib {
 		m_Blue = ZorkLib::Utility::SetMinMax(m_Blue * other.m_Blue, 0.f, 1.f);
 		m_Green = ZorkLib::Utility::SetMinMax(m_Green * other.m_Green, 0.f, 1.f);
 		m_Alpha = ZorkLib::Utility::SetMinMax(m_Alpha * other.m_Alpha, 0.f, 1.f);
+		return *this;
+	}
+
+	Color Color::operator*(const float & scale) {
+		Color result = this;
+		result *= scale;
+		return result;
+	}
+
+	Color & Color::operator*=(const float & scale) {
+		m_Red = ZorkLib::Utility::SetMinMax(m_Red * scale, 0.f, 1.f);
+		m_Blue = ZorkLib::Utility::SetMinMax(m_Blue * scale, 0.f, 1.f);
+		m_Green = ZorkLib::Utility::SetMinMax(m_Green * scale, 0.f, 1.f);
 		return *this;
 	}
 

@@ -27,10 +27,16 @@
     <ClInclude Include="ZorkLibWindowObjects.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ZorkLibGUI.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ZorkLibGUIObjects.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ZorkLibUtility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZorkLibUSB.hpp">
+    <ClInclude Include="ZorkLibException.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,8 +50,10 @@
     <ClCompile Include="ZorkLibUtility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZorkLibUSB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Limitations.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

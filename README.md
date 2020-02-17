@@ -1,7 +1,6 @@
 # ZorkLib
 C++ Wrapper Library for WinAPI, Direct2D, GUIs and often used functionality. Quick and easy to use.  
-This library is work in progress and will often change existing parts. Developed using Visual Studio 2017.  
-Main development is done privately on TFS. Occasionally a new version will be ported here.
+This library is work in progress and will often change existing parts. Developed using Visual Studio 2019.
 
 #### Features
 * ZorkLibWindow 
@@ -13,6 +12,7 @@ Main development is done privately on TFS. Occasionally a new version will be po
 
 #### Requirements
 * Windows (preferably 10)
+* DirectX Feature Level 11.1
 * for ZorkLibUSB: [libusb](https://github.com/libusb/libusb)
 
 
@@ -53,9 +53,7 @@ Main development is done privately on TFS. Occasionally a new version will be po
 		window.SetKeyEventFunction(OnKeyEvent);
 		window.SetMouseEventFunction(OnMouseEvent);
         
-        // This function will run and call framework methods until exit condition is met. (Here: When escape key is pressed)
-		window.WindowLoop([] {
-			return ZorkLib::IsKeyDown(VK_ESCAPE);
-		});
+        // This function will run and call framework methods until exit condition is met. (Default: When escape key is pressed)
+		window.WindowLoop();
         
 	}

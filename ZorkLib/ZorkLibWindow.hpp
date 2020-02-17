@@ -1,12 +1,16 @@
 #pragma once
 
+#ifndef UNICODE
 #define UNICODE
+#endif
 
 #include "ZorkLibUtility.hpp"
 #include "ZorkLibWindowObjects.hpp"
+#include "ZorkLibException.hpp"
 
 #include <string>
 #include <functional>
+#include <codecvt>
 
 namespace ZorkLib {
 
@@ -69,12 +73,20 @@ namespace ZorkLib {
 
 		void HandleMessages();
 		void Render();
+		void WindowLoop();
+		void WindowLoop(std::function<void(float)> Callback);
 		void WindowLoop(std::function<bool(void)> ExitCondition);
-		void WindowLoop(std::function<bool(void)> ExitCondition, std::function<void(void)> Callback);
+		void WindowLoop(std::function<bool(void)> ExitCondition, std::function<void(float)> Callback);
 		void SetSimpleRenderFunction(std::function<void(SimpleRenderer&)> simpleRender);
 		void SetDirectRenderFunction(std::function<void(DirectXAccess&)> directRender);
 		void SetMouseEventFunction(std::function<void(UINT32, INT32, INT32, bool)> mouseEventFunction);
+		void SetMouseWheelFunction(std::function<void(INT32)> mouseWheelFunction);
 		void SetKeyEventFunction(std::function<void(UINT32, bool)> keyEventFunction);
+		void SetWindowProcedure(std::function<std::pair<bool, LRESULT>(HWND, UINT32, WPARAM, LPARAM)> windowProc);
+		void SetVsync(bool vsync);
+		bool GetVsync();
+		void SetCatchExceptions(bool use);
+		bool GetCatchExceptions();
 		Bitmap LoadBitmap(std::wstring fileName);
 		void SaveContent(std::wstring fileName);
 		Point GetCursorPos();
@@ -82,22 +94,32 @@ namespace ZorkLib {
 
 	private:
 
+		void DisplayHresultErrorMessageBox(HRESULT hr, std::wstring msg);
+
+		LARGE_INTEGER m_TimerFreq;
+		LARGE_INTEGER m_TimerNow, m_TimerPrev;
+
 		UINT32 m_RenderWidth;
 		UINT32 m_RenderHeight;
 		UINT32 m_WindowWidth;
 		UINT32 m_WindowHeight;
 
 		bool m_Vsync;
+		bool m_CatchExceptions;
 
 		DirectXAccess m_DirectX;
 		SimpleRenderer m_SimpleRenderer;
 		std::function<void(SimpleRenderer&)> m_SimpleRenderFunction;
 		std::function<void(DirectXAccess&)> m_DirectRenderFunction;
 		std::function<void(UINT32, INT32, INT32, bool)> m_MouseEventFunction;
+		std::function<void(INT32)> m_MouseWheelFunction;
 		std::function<void(UINT32, bool)> m_KeyEventFunction;
+		std::function<std::pair<bool, LRESULT>(HWND, UINT32, WPARAM, LPARAM)> m_WindowProcedure;
 
 		LRESULT CALLBACK WndProc(HWND hWnd, UINT32 msg, WPARAM w, LPARAM l);
 		static LRESULT CALLBACK StaticWindowProcedure(HWND hWnd, UINT32 msg, WPARAM w, LPARAM l);
+
+		static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> m_Cvt;
 
 	};
 

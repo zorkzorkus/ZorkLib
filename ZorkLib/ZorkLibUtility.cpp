@@ -11,50 +11,22 @@ namespace ZorkLib {
 			return input;
 		}
 
-
-
-		// Splits a wstring input with wstring splitter - the substrings are returned in a vector - if there is no occurence of splitter an empty vector is returned.
-		std::vector<std::wstring> SplitString(std::wstring input, std::wstring splitter) {
+		std::vector<std::wstring> GetFoldersOfPathW(std::wstring path) {
 
 			std::vector<std::wstring> res;
-			std::wstring front;
-			size_t pos;
-
-			pos = input.find_first_of(splitter);
-
-			if (pos == input.npos) return res;
-
-			while (pos != input.npos) {
-				front = input;
-				front.erase(pos, front.size() - pos);
-				res.push_back(front);
-				input.erase(0, pos + splitter.size());
-				pos = input.find_first_of(splitter);
-			}
-
-			res.push_back(input);
-
-			return res;
-		}
-
-
-
-		std::vector<std::string> GetFoldersOfPath(std::string path) {
-
-			std::vector<std::string> res;
-			WIN32_FIND_DATA filedata;
-			std::string searchPath = path + "\\*";
-			HANDLE h = FindFirstFile(searchPath.c_str(), &filedata);
+			WIN32_FIND_DATAW filedata;
+			std::wstring searchPath = path + L"\\*";
+			HANDLE h = FindFirstFileW(searchPath.c_str(), &filedata);
 
 			while (h != INVALID_HANDLE_VALUE) {
 
-				std::string file = filedata.cFileName;
+				std::wstring file = filedata.cFileName;
 
-				if (filedata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY && file != ".." && file != ".") {
-					res.push_back(path + "\\" + file); //TODO: Check if file is correct string.
+				if (filedata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY && file != L".." && file != L".") {
+					res.push_back(path + L"\\" + file); //TODO: Check if file is correct string.
 				}
 
-				if (FindNextFile(h, &filedata) == 0) break;
+				if (FindNextFileW(h, &filedata) == 0) break;
 
 			}
 
@@ -62,24 +34,104 @@ namespace ZorkLib {
 
 		}
 
+		std::vector<std::wstring> GetFilesOfPathW(std::wstring path) {
 
-
-		std::vector<std::string> GetFilesOfPath(std::string path) {
-
-			std::vector<std::string> res;
-			WIN32_FIND_DATA filedata;
-			std::string searchPath = path + "\\*";
-			HANDLE h = FindFirstFile(searchPath.c_str(), &filedata);
+			std::vector<std::wstring> res;
+			WIN32_FIND_DATAW filedata;
+			std::wstring searchPath = path + L"\\*";
+			HANDLE h = FindFirstFileW(searchPath.c_str(), &filedata);
 
 			while (h != INVALID_HANDLE_VALUE) {
 
-				std::string file = filedata.cFileName;
+				std::wstring file = filedata.cFileName;
 
 				if ((filedata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0) {
-					res.push_back(path + "\\" + file); //TODO: Check if file is correct string.
+					res.push_back(path + L"\\" + file); //TODO: Check if file is correct string.
 				}
 
-				if (FindNextFile(h, &filedata) == 0) break;
+				if (FindNextFileW(h, &filedata) == 0) break;
+
+			}
+
+			return res;
+
+		}
+
+		std::vector<std::wstring> GetFilesOfPathRecursiveW(std::wstring path) {
+
+			std::vector<std::wstring> res = GetFilesOfPathW(path);
+
+			std::vector<std::wstring> folders = GetFoldersOfPathW(path);
+
+			for (size_t i = 0; i < folders.size(); ++i) {
+				std::vector<std::wstring> temp = GetFoldersOfPathW(folders[i]);
+				folders.insert(folders.end(), temp.begin(), temp.end());
+				temp = GetFilesOfPathW(folders[i]);
+				res.insert(res.end(), temp.begin(), temp.end());
+			}
+
+			return res;
+
+		}
+
+		std::vector<std::wstring> GetFoldersOfPathRecursiveW(std::wstring path) {
+
+			std::vector<std::wstring> folders = GetFoldersOfPathW(path);
+
+			for (size_t i = 0; i < folders.size(); ++i) {
+				std::vector<std::wstring> temp = GetFoldersOfPathW(folders[i]);
+				folders.insert(folders.end(), temp.begin(), temp.end());
+			}
+
+			return folders;
+
+		}
+
+		std::vector<std::wstring> GetFoldersOfPathW(std::wstring path, std::function<bool(std::wstring)> filter) {
+
+			std::vector<std::wstring> res;
+			WIN32_FIND_DATAW filedata;
+			std::wstring searchPath = path + L"\\*";
+			HANDLE h = FindFirstFileW(searchPath.c_str(), &filedata);
+
+			while (h != INVALID_HANDLE_VALUE) {
+
+				std::wstring file = filedata.cFileName;
+
+				if (filedata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY && file != L".." && file != L".") {
+					file = path + L"\\" + file; // local file does not contain full path
+					if (filter(file)) {
+						res.push_back(file);
+					}
+				}
+
+				if (FindNextFileW(h, &filedata) == 0) break;
+
+			}
+
+			return res;
+
+		}
+
+		std::vector<std::wstring> GetFilesOfPathW(std::wstring path, std::function<bool(std::wstring)> filter) {
+
+			std::vector<std::wstring> res;
+			WIN32_FIND_DATAW filedata;
+			std::wstring searchPath = path + L"\\*";
+			HANDLE h = FindFirstFileW(searchPath.c_str(), &filedata);
+
+			while (h != INVALID_HANDLE_VALUE) {
+
+				std::wstring file = filedata.cFileName;
+
+				if ((filedata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0) {
+					file = path + L"\\" + file; // local file does not contain full path
+					if (filter(file)) {
+						res.push_back(file);
+					}
+				}
+
+				if (FindNextFileW(h, &filedata) == 0) break;
 
 			}
 
@@ -89,16 +141,16 @@ namespace ZorkLib {
 
 
 
-		std::vector<std::string> GetFilesOfPathRecursive(std::string path) {
+		std::vector<std::wstring> GetFilesOfPathRecursiveW(std::wstring path, std::function<bool(std::wstring)> filter) {
 
-			std::vector<std::string> res = GetFilesOfPath(path);
+			std::vector<std::wstring> res = GetFilesOfPathW(path, filter);
 
-			std::vector<std::string> folders = GetFoldersOfPath(path);
+			std::vector<std::wstring> folders = GetFoldersOfPathW(path);
 
 			for (size_t i = 0; i < folders.size(); ++i) {
-				std::vector<std::string> temp = GetFoldersOfPath(folders[i]);
+				std::vector<std::wstring> temp = GetFoldersOfPathW(folders[i]);
 				folders.insert(folders.end(), temp.begin(), temp.end());
-				temp = GetFilesOfPath(folders[i]);
+				temp = GetFilesOfPathW(folders[i], filter);
 				res.insert(res.end(), temp.begin(), temp.end());
 			}
 
@@ -108,12 +160,12 @@ namespace ZorkLib {
 
 
 
-		std::vector<std::string> GetFoldersOfPathRecursive(std::string path) {
+		std::vector<std::wstring> GetFoldersOfPathRecursiveW(std::wstring path, std::function<bool(std::wstring)> filter) {
 
-			std::vector<std::string> folders = GetFoldersOfPath(path);
+			std::vector<std::wstring> folders = GetFoldersOfPathW(path, filter);
 
 			for (size_t i = 0; i < folders.size(); ++i) {
-				std::vector<std::string> temp = GetFoldersOfPath(folders[i]);
+				std::vector<std::wstring> temp = GetFoldersOfPathW(folders[i], filter);
 				folders.insert(folders.end(), temp.begin(), temp.end());
 			}
 
@@ -121,52 +173,40 @@ namespace ZorkLib {
 
 		}
 
-
-		std::vector<std::string> GetFoldersOfPath(std::string path, std::function<bool(std::string)> filter) {
-
-			std::vector<std::string> res;
-			WIN32_FIND_DATA filedata;
-			std::string searchPath = path + "\\*";
-			HANDLE h = FindFirstFile(searchPath.c_str(), &filedata);
-
-			while (h != INVALID_HANDLE_VALUE) {
-
-				std::string file = filedata.cFileName;
-
-				if (filedata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY && file != ".." && file != ".") {
-					if (filter(file)) {
-						res.push_back(path + "\\" + file); //TODO: Check if file is correct string.
-					}
+		std::vector<std::wstring> LoadTextfileW(std::wstring path) {
+			std::vector<std::wstring> res;
+			std::wifstream ifs(path);
+			if (ifs) {
+				std::wstring in;
+				while (std::getline(ifs, in)) {
+					res.push_back(in);
 				}
-
-				if (FindNextFile(h, &filedata) == 0) break;
-
 			}
-
 			return res;
-
 		}
 
+		// ANSI-C Strings
+		//
+		//
+		//
+		// ANSI-C Strings
 
-
-		std::vector<std::string> GetFilesOfPath(std::string path, std::function<bool(std::string)> filter) {
+		std::vector<std::string> GetFilesOfPathA(std::string path) {
 
 			std::vector<std::string> res;
-			WIN32_FIND_DATA filedata;
+			WIN32_FIND_DATAA filedata;
 			std::string searchPath = path + "\\*";
-			HANDLE h = FindFirstFile(searchPath.c_str(), &filedata);
+			HANDLE h = FindFirstFileA(searchPath.c_str(), &filedata);
 
 			while (h != INVALID_HANDLE_VALUE) {
 
 				std::string file = filedata.cFileName;
 
 				if ((filedata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0) {
-					if (filter(file)) {
-						res.push_back(path + "\\" + file); //TODO: Check if file is correct string.
-					}
+					res.push_back(path + "\\" + file); //TODO: Check if file is correct string.
 				}
 
-				if (FindNextFile(h, &filedata) == 0) break;
+				if (FindNextFileA(h, &filedata) == 0) break;
 
 			}
 
@@ -174,18 +214,39 @@ namespace ZorkLib {
 
 		}
 
+		std::vector<std::string> GetFoldersOfPathA(std::string path) {
 
+			std::vector<std::string> res;
+			WIN32_FIND_DATAA filedata;
+			std::string searchPath = path + "\\*";
+			HANDLE h = FindFirstFileA(searchPath.c_str(), &filedata);
 
-		std::vector<std::string> GetFilesOfPathRecursive(std::string path, std::function<bool(std::string)> filter) {
+			while (h != INVALID_HANDLE_VALUE) {
 
-			std::vector<std::string> res = GetFilesOfPath(path, filter);
+				std::string file = filedata.cFileName;
 
-			std::vector<std::string> folders = GetFoldersOfPath(path);
+				if (filedata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY && file != ".." && file != ".") {
+					res.push_back(path + "\\" + file); //TODO: Check if file is correct string.
+				}
+
+				if (FindNextFileA(h, &filedata) == 0) break;
+
+			}
+
+			return res;
+
+		}
+
+		std::vector<std::string> GetFilesOfPathRecursiveA(std::string path) {
+
+			std::vector<std::string> res = GetFilesOfPathA(path);
+
+			std::vector<std::string> folders = GetFoldersOfPathA(path);
 
 			for (size_t i = 0; i < folders.size(); ++i) {
-				std::vector<std::string> temp = GetFoldersOfPath(folders[i]);
+				std::vector<std::string> temp = GetFoldersOfPathA(folders[i]);
 				folders.insert(folders.end(), temp.begin(), temp.end());
-				temp = GetFilesOfPath(folders[i], filter);
+				temp = GetFilesOfPathA(folders[i]);
 				res.insert(res.end(), temp.begin(), temp.end());
 			}
 
@@ -193,19 +254,111 @@ namespace ZorkLib {
 
 		}
 
+		std::vector<std::string> GetFoldersOfPathRecursiveA(std::string path) {
 
-
-		std::vector<std::string> GetFoldersOfPathRecursive(std::string path, std::function<bool(std::string)> filter) {
-
-			std::vector<std::string> folders = GetFoldersOfPath(path, filter);
+			std::vector<std::string> folders = GetFoldersOfPathA(path);
 
 			for (size_t i = 0; i < folders.size(); ++i) {
-				std::vector<std::string> temp = GetFoldersOfPath(folders[i], filter);
+				std::vector<std::string> temp = GetFoldersOfPathA(folders[i]);
 				folders.insert(folders.end(), temp.begin(), temp.end());
 			}
 
 			return folders;
 
+		}
+
+		std::vector<std::string> GetFoldersOfPathA(std::string path, std::function<bool(std::string)> filter) {
+
+			std::vector<std::string> res;
+			WIN32_FIND_DATAA filedata;
+			std::string searchPath = path + "\\*";
+			HANDLE h = FindFirstFileA(searchPath.c_str(), &filedata);
+
+			while (h != INVALID_HANDLE_VALUE) {
+
+				std::string file = filedata.cFileName;
+
+				if (filedata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY && file != ".." && file != ".") {
+					file = path + "\\" + file; // local file does not contain full path
+					if (filter(file)) {
+						res.push_back(file);
+					}
+				}
+
+				if (FindNextFileA(h, &filedata) == 0) break;
+
+			}
+
+			return res;
+
+		}
+
+		std::vector<std::string> GetFilesOfPathA(std::string path, std::function<bool(std::string)> filter) {
+
+			std::vector<std::string> res;
+			WIN32_FIND_DATAA filedata;
+			std::string searchPath = path + "\\*";
+			HANDLE h = FindFirstFileA(searchPath.c_str(), &filedata);
+
+			while (h != INVALID_HANDLE_VALUE) {
+
+				std::string file = filedata.cFileName;
+
+				if ((filedata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0) {
+					file = path + "\\" + file; // local file does not contain full path
+					if (filter(file)) {
+						res.push_back(file);
+					}
+				}
+
+				if (FindNextFileA(h, &filedata) == 0) break;
+
+			}
+
+			return res;
+
+		}
+
+		std::vector<std::string> GetFilesOfPathRecursiveA(std::string path, std::function<bool(std::string)> filter) {
+
+			std::vector<std::string> res = GetFilesOfPathA(path, filter);
+
+			std::vector<std::string> folders = GetFoldersOfPathA(path);
+
+			for (size_t i = 0; i < folders.size(); ++i) {
+				std::vector<std::string> temp = GetFoldersOfPathA(folders[i]);
+				folders.insert(folders.end(), temp.begin(), temp.end());
+				temp = GetFilesOfPathA(folders[i], filter);
+				res.insert(res.end(), temp.begin(), temp.end());
+			}
+
+			return res;
+
+		}
+
+		std::vector<std::string> GetFoldersOfPathRecursiveA(std::string path, std::function<bool(std::string)> filter) {
+
+			std::vector<std::string> folders = GetFoldersOfPathA(path, filter);
+
+			for (size_t i = 0; i < folders.size(); ++i) {
+				std::vector<std::string> temp = GetFoldersOfPathA(folders[i], filter);
+				folders.insert(folders.end(), temp.begin(), temp.end());
+			}
+
+			return folders;
+
+		}
+
+		std::vector<std::string> LoadTextfileA(std::string path) {
+			std::vector<std::string> res;
+			std::ifstream ifs(path);
+			if (ifs) {
+				std::string in;
+				while (std::getline(ifs, in)) {
+					res.push_back(in);
+				}
+			}
+			return res;
 		}
 
 	}

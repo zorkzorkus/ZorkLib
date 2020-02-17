@@ -14,8 +14,11 @@
 #endif
 #endif
 
+#ifndef ZORKLIB_HEADER_USB
+#define ZORKLIB_HEADER_USB
+#endif
+
 #include <libusb.h>
-//#include "ZorkLibInternalExternalLibusb.hpp"
 #include <basetsd.h>
 #include <sstream>
 #include <string>
