@@ -51,19 +51,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09B1B6B5-A27E-4C38-AFF2-370BDA736D18}
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://zorrrk.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ZorkLib\\ZorkLib.vcxproj
-		SccProjectName1 = ZorkLib
-		SccLocalPath1 = ZorkLib
-		SccProjectUniqueName2 = ZorkLibTest\\ZorkLibTest.vcxproj
-		SccProjectName2 = ZorkLibTest
-		SccLocalPath2 = ZorkLibTest
-		SccProjectUniqueName3 = ZorkLibUSB\\ZorkLibUSB.vcxproj
-		SccProjectName3 = ZorkLibUSB
-		SccLocalPath3 = ZorkLibUSB
-	EndGlobalSection
 EndGlobal

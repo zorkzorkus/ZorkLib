@@ -4,13 +4,6 @@ namespace ZorkLib {
 
 	namespace Utility {
 
-		// Returns input if input is in interval [min, max] - otherwise it returns the breached interval boundary.
-		float SetMinMax(float input, float min, float max) {
-			if (input < min) return min;
-			if (input > max) return max;
-			return input;
-		}
-
 		std::vector<std::wstring> GetFoldersOfPathW(std::wstring path) {
 
 			std::vector<std::wstring> res;

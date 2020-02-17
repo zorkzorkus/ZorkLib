@@ -326,10 +326,10 @@ namespace ZorkLib {
 	}
 
 	Color& Color::operator+=(const Color& other) {
-		m_Red = ZorkLib::Utility::SetMinMax(m_Red + other.m_Red, 0.f, 1.f);
-		m_Blue = ZorkLib::Utility::SetMinMax(m_Blue + other.m_Blue, 0.f, 1.f);
-		m_Green = ZorkLib::Utility::SetMinMax(m_Green + other.m_Green, 0.f, 1.f);
-		m_Alpha = ZorkLib::Utility::SetMinMax(m_Alpha + other.m_Alpha, 0.f, 1.f);
+		m_Red = ZorkLib::Utility::MinMax(m_Red + other.m_Red, 0.f, 1.f);
+		m_Blue = ZorkLib::Utility::MinMax(m_Blue + other.m_Blue, 0.f, 1.f);
+		m_Green = ZorkLib::Utility::MinMax(m_Green + other.m_Green, 0.f, 1.f);
+		m_Alpha = ZorkLib::Utility::MinMax(m_Alpha + other.m_Alpha, 0.f, 1.f);
 		return *this;
 	}
 
@@ -340,10 +340,10 @@ namespace ZorkLib {
 	}
 
 	Color& Color::operator*=(const Color& other) {
-		m_Red = ZorkLib::Utility::SetMinMax(m_Red * other.m_Red, 0.f, 1.f);
-		m_Blue = ZorkLib::Utility::SetMinMax(m_Blue * other.m_Blue, 0.f, 1.f);
-		m_Green = ZorkLib::Utility::SetMinMax(m_Green * other.m_Green, 0.f, 1.f);
-		m_Alpha = ZorkLib::Utility::SetMinMax(m_Alpha * other.m_Alpha, 0.f, 1.f);
+		m_Red = ZorkLib::Utility::MinMax(m_Red * other.m_Red, 0.f, 1.f);
+		m_Blue = ZorkLib::Utility::MinMax(m_Blue * other.m_Blue, 0.f, 1.f);
+		m_Green = ZorkLib::Utility::MinMax(m_Green * other.m_Green, 0.f, 1.f);
+		m_Alpha = ZorkLib::Utility::MinMax(m_Alpha * other.m_Alpha, 0.f, 1.f);
 		return *this;
 	}
 
@@ -354,9 +354,9 @@ namespace ZorkLib {
 	}
 
 	Color & Color::operator*=(const float & scale) {
-		m_Red = ZorkLib::Utility::SetMinMax(m_Red * scale, 0.f, 1.f);
-		m_Blue = ZorkLib::Utility::SetMinMax(m_Blue * scale, 0.f, 1.f);
-		m_Green = ZorkLib::Utility::SetMinMax(m_Green * scale, 0.f, 1.f);
+		m_Red = ZorkLib::Utility::MinMax(m_Red * scale, 0.f, 1.f);
+		m_Blue = ZorkLib::Utility::MinMax(m_Blue * scale, 0.f, 1.f);
+		m_Green = ZorkLib::Utility::MinMax(m_Green * scale, 0.f, 1.f);
 		return *this;
 	}
 
@@ -386,19 +386,19 @@ namespace ZorkLib {
 	}
 
 	void Color::SetRed(float red) {
-		m_Red = Utility::SetMinMax(red, 0.f, 1.f);
+		m_Red = Utility::MinMax(red, 0.f, 1.f);
 	}
 
 	void Color::SetGreen(float green) {
-		m_Green = Utility::SetMinMax(green, 0.f, 1.f);
+		m_Green = Utility::MinMax(green, 0.f, 1.f);
 	}
 
 	void Color::SetBlue(float blue) {
-		m_Blue = Utility::SetMinMax(blue, 0.f, 1.f);
+		m_Blue = Utility::MinMax(blue, 0.f, 1.f);
 	}
 
 	void Color::SetAlpha(float alpha) {
-		m_Alpha = Utility::SetMinMax(alpha, 0.f, 1.f);
+		m_Alpha = Utility::MinMax(alpha, 0.f, 1.f);
 	}
 
 }

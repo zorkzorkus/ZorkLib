@@ -6,7 +6,7 @@ Header for binding the correct library
 
 #ifdef _DEBUG
 	#ifdef _WIN64
-		#pragma comment(lib, "ZorkLib64.lib")
+		#pragma comment(lib, "ZorkLib64d.lib")
 	#else
 		#pragma comment(lib, "ZorkLib32d.lib")
 	#endif

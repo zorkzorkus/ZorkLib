@@ -27,10 +27,13 @@ namespace ZorkLib {
 
 	namespace Utility {
 
-		float SetMinMax(float input, float min, float max);
-
-
-
+		// Returns input if input is in interval [min, max] - otherwise it returns the overstepped interval boundary.
+		template <typename T>
+		T MinMax(T input, T min, T max) {
+			if (input < min) return min;
+			if (input > max) return max;
+			return input;
+		}
 
 		// Splits a string input with string splitter - the substrings are returned in a vector - if there is no occurence of splitter an empty vector is returned.
 		template <typename basic_string>
