@@ -6,8 +6,6 @@ namespace ZorkLib {
 	// global functions
 	// ----------------
 
-	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> Window::m_Cvt;
-
 	bool IsKeyDown(UINT32 key) {
 		return static_cast<bool>(GetAsyncKeyState(key) & 0x8000);
 	}
@@ -522,7 +520,7 @@ namespace ZorkLib {
 	void Window::DisplayHresultErrorMessageBox(HRESULT hr, std::wstring msg) {
 		wchar_t errNr[20] = {0};
 		auto aError = std::system_category().message(hr);
-		auto wError = m_Cvt.from_bytes(aError);
+		auto wError = Utility::StringToWideString(aError);
 		_itow_s(hr, errNr, 16);
 		std::wstring err = msg + L"\n0x" + errNr + L": " + wError;
 		MessageBox(NULL, err.c_str(), L"Error", MB_OK | MB_ICONERROR);

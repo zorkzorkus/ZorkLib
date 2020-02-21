@@ -80,6 +80,9 @@ namespace ZorkLib {
 		std::vector<std::string> GetFoldersOfPathRecursiveA(std::string path, std::function<bool(std::string)> filter);
 		std::vector<std::string> LoadTextfileA(std::string path);
 
+		std::string WideStringToString(std::wstring ws);
+		std::wstring StringToWideString(std::string s);
+
 	}
 
 }

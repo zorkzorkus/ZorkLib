@@ -4,6 +4,8 @@
 #define UNICODE
 #endif
 
+#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+
 #include "ZorkLibUtility.hpp"
 #include "ZorkLibWindowObjects.hpp"
 #include "ZorkLibException.hpp"
@@ -118,9 +120,7 @@ namespace ZorkLib {
 
 		LRESULT CALLBACK WndProc(HWND hWnd, UINT32 msg, WPARAM w, LPARAM l);
 		static LRESULT CALLBACK StaticWindowProcedure(HWND hWnd, UINT32 msg, WPARAM w, LPARAM l);
-
-		static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> m_Cvt;
-
+		
 	};
 
 }
