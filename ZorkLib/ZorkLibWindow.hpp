@@ -4,6 +4,8 @@
 #define UNICODE
 #endif
 
+#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+
 #include "ZorkLibUtility.hpp"
 #include "ZorkLibWindowObjects.hpp"
 #include "ZorkLibException.hpp"
