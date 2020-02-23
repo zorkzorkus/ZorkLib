@@ -24,6 +24,23 @@ namespace ZorkLib {
 		y += p.y;
 	}
 
+	Point Point::Moved(float x, float y) {
+		return *this + Point(x, y);
+	}
+
+	Point Point::Moved(Point p) {
+		return *this + p;
+	}
+
+	void Point::Scale(float s) {
+		x *= s;
+		y *= s;
+	}
+
+	Point Point::Scaled(float s) {
+		return Point(s*x, s*y);
+	}
+
 	Point::operator D2D1_POINT_2F() {
 		return D2D1::Point2F(x, y);
 	}
@@ -56,6 +73,30 @@ namespace ZorkLib {
 	Point& Point::operator-=(const Point& other) {
 		x -= other.x;
 		y -= other.y;
+		return *this;
+	}
+
+	Point Point::operator*(const float s) {
+		Point result = this;
+		result *= s;
+		return result;
+	}
+
+	Point& Point::operator*=(const float s) {
+		x *= s;
+		y *= s;
+		return *this;
+	}
+
+	Point Point::operator/(const float s) {
+		Point result = this;
+		result /= s;
+		return result;
+	}
+
+	Point& Point::operator/=(const float s) {
+		x /= s;
+		y /= s;
 		return *this;
 	}
 

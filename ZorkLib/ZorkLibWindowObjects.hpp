@@ -35,6 +35,10 @@ namespace ZorkLib {
 		// Memberfunctions
 		void Move(float x, float y);
 		void Move(Point p);
+		Point Moved(float x, float y);
+		Point Moved(Point p);
+		void Scale(float s);
+		Point Scaled(float s);
 
 		// Conversion operators
 		operator D2D1_POINT_2F();
@@ -45,6 +49,10 @@ namespace ZorkLib {
 		Point operator-();
 		Point operator-(const Point& other);
 		Point& operator-=(const Point& other);
+		Point operator*(const float s);
+		Point& operator*=(const float s);
+		Point operator/(const float s);
+		Point& operator/=(const float s);
 
 	public:
 
