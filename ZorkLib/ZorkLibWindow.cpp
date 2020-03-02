@@ -437,6 +437,7 @@ namespace ZorkLib {
 				throw ex;
 			}
 		}
+		return nullptr;
 	}
 
 	void Window::SaveContent(std::wstring fileName) {

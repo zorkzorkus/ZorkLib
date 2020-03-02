@@ -35,6 +35,23 @@ namespace ZorkLib {
 			return input;
 		}
 
+		template <typename T>
+		T Min(T a, T b) {
+			return (a < b) ? a : b;
+		}
+
+		template <typename T>
+		T Max(T a, T b) {
+			return (a > b) ? a : b;
+		}
+
+		template <typename T>
+		T Wrap(T in, T min, T max) {
+			while (in < min) in += max - min;
+			while (in >= max) in -= max - min;
+			return in;
+		}
+
 		// Splits a string input with string splitter - the substrings are returned in a vector - if there is no occurence of splitter an empty vector is returned.
 		template <typename basic_string>
 		std::vector<basic_string> SplitString(basic_string input, basic_string splitter) {

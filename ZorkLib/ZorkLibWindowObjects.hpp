@@ -33,11 +33,11 @@ namespace ZorkLib {
 		Point(const Point* ref);
 
 		// Memberfunctions
-		void Move(float x, float y);
-		void Move(Point p);
+		Point& Move(float x, float y);
+		Point& Move(Point p);
 		Point Moved(float x, float y);
 		Point Moved(Point p);
-		void Scale(float s);
+		Point& Scale(float s);
 		Point Scaled(float s);
 
 		// Conversion operators
@@ -78,8 +78,10 @@ namespace ZorkLib {
 		Line(const Line* ref);
 
 		// Memberfunctions
-		void Move(float x, float y);
-		void Move(Point p);
+		Line& Move(float x, float y);
+		Line& Move(Point p);
+		Line Moved(float x, float y);
+		Line Moved(Point p);
 		float Length();
 
 		// Conversion operators
@@ -117,14 +119,22 @@ namespace ZorkLib {
 		Rectangle(const Rectangle* ref);
 
 		// Memberfunctions
-		void Scale(float scale, float centerX, float centerY);
-		void Scale(float x, float y, float centerX, float centerY);
-		void Scale(float scale);
-		void Scale(float x, float y);
-		void ShiftIn(float x, float y);
-		void ShiftOut(float x, float y);
-		void Move(float x, float y);
-		void Move(Point p);
+		Rectangle& Scale(float scale, float centerX, float centerY);
+		Rectangle& Scale(float x, float y, float centerX, float centerY);
+		Rectangle& Scale(float scale);
+		Rectangle& Scale(float x, float y);
+		Rectangle& ShiftIn(float x, float y);
+		Rectangle& ShiftOut(float x, float y);
+		Rectangle& Move(float x, float y);
+		Rectangle& Move(Point p);
+		Rectangle Scaled(float scale, float centerX, float centerY);
+		Rectangle Scaled(float x, float y, float centerX, float centerY);
+		Rectangle Scaled(float scale);
+		Rectangle Scaled(float x, float y);
+		Rectangle ShiftedIn(float x, float y);
+		Rectangle ShiftedOut(float x, float y);
+		Rectangle Moved(float x, float y);
+		Rectangle Moved(Point p);
 		float Width();
 		float Height();
 		Point Center();
@@ -141,7 +151,7 @@ namespace ZorkLib {
 	public:
 
 		static Rectangle RectMainScreen();
-		static Rectangle RectDesktop();
+		static Rectangle RectVirtualScreen();
 		static Rectangle RectCentered(Point center, float width, float height);
 		static Rectangle RectCentered(float x, float y, float width, float height);
 		static Rectangle Box(float leftUpperX, float leftUpperY, float width, float height);
@@ -174,8 +184,15 @@ namespace ZorkLib {
 		Ellipse(const Ellipse* ref);
 
 		// Memberfunctions
-		void Move(float x, float y);
-		void Move(Point p);
+		Ellipse& Move(float x, float y);
+		Ellipse& Move(Point p);
+		Ellipse& Scale(float scale);
+		Ellipse& Scale(float x, float y);
+
+		Ellipse Moved(float x, float y);
+		Ellipse Moved(Point p);
+		Ellipse Scaled(float scale);
+		Ellipse Scaled(float x, float y);
 
 		// Conversion operators
 		operator D2D1_ELLIPSE();
@@ -201,7 +218,7 @@ namespace ZorkLib {
 
 	enum class ColorEnum : UINT32 {
 		// Enums are 0xAARRGGBB (Alpha, Red, Green, Blue) format
-		// In memory this will look like BGRA since x64-architecture is little endian.
+		// In memory this will look like BGRA (first byte is blue, etc) since x64-architecture is little endian.
 		Black = 0xFF000000,
 		DarkGray = 0xFF3F3F3F,
 		Gray = 0xFF7F7F7F,
@@ -222,6 +239,9 @@ namespace ZorkLib {
 		Brown = 0xFF7F3F00
 	};
 
+	// forward declaration
+	class ColorHSV;
+
 	class Color {
 
 	public:
@@ -233,6 +253,7 @@ namespace ZorkLib {
 		Color(float red, float green, float blue, float opacity = 1.f);
 		Color(int red, int green, int blue, int opacity = 0xFF); // only supply values from 0x00 to 0xFF
 		Color(UINT32 color);
+		Color(ColorHSV colorHSV);
 
 		operator D2D1_COLOR_F();
 
@@ -255,11 +276,68 @@ namespace ZorkLib {
 		void SetBlue(float blue);
 		void SetAlpha(float alpha);
 
+		float AddRed(float red);
+		float AddGreen(float green);
+		float AddBlue(float blue);
+		float AddAlpha(float alpha);
+
 	private:
 
 		float m_Red;
 		float m_Green;
 		float m_Blue;
+		float m_Alpha;
+
+	};
+
+	// --------------
+	// class ColorHSV
+	// --------------
+
+	class ColorHSV {
+
+	public:
+
+		ColorHSV();
+		ColorHSV(const ColorHSV& other);
+		ColorHSV(const ColorHSV* other);
+		ColorHSV(ColorEnum ce, float opacity = 1.f);
+		ColorHSV(float h, float s, float v, float opacity = 1.f);
+		ColorHSV(UINT32 color);
+		ColorHSV(Color colorRGB);
+
+		operator D2D1_COLOR_F();
+
+		// unclear what these operators should do...
+		/*ColorHSV operator+(const ColorHSV& other);
+		ColorHSV& operator+=(const ColorHSV& other);
+		ColorHSV operator*(const ColorHSV& other);
+		ColorHSV& operator*=(const ColorHSV& other);
+		ColorHSV operator*(const float& scale);
+		ColorHSV& operator*=(const float& scale);*/
+
+		UINT32 GetHex();
+
+		float GetHue();
+		float GetSaturation();
+		float GetValue();
+		float GetAlpha();
+
+		void SetHue(float red);
+		void SetSaturation(float green);
+		void SetValue(float blue);
+		void SetAlpha(float alpha);
+
+		float AddHue(float h);
+		float AddSaturation(float s);
+		float AddValue(float v);
+		float AddAlpha(float a);
+
+	private:
+
+		float m_Hue;
+		float m_Saturation;
+		float m_Value;
 		float m_Alpha;
 
 	};
