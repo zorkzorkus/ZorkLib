@@ -1,6 +1,6 @@
 # ZorkLib
 C++ Wrapper Library for WinAPI, Direct2D, GUIs and often used functionality. Quick and easy to use.  
-This library is work in progress and will often change existing parts. Developed using Visual Studio 2019.
+This library is work in progress and may change existing parts. Developed using Visual Studio 2019.
 
 #### Features
 * ZorkLib/Window 
@@ -27,7 +27,7 @@ This library is work in progress and will often change existing parts. Developed
 * Because of the direct usage of WinAPI and DirectX, this library only works on Windows. Ports to other platforms is unlikely.
 * Code is unfinished and often a mess ;)
 * Much functionality is still missing.
-* Some things may be designed poorly and will be altered when it becomes a problem.
+* Some things may be designed poorly and will be reworked when it becomes a problem.
 
 #### Example
 
