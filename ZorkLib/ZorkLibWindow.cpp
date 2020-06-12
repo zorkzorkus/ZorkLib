@@ -127,11 +127,46 @@ namespace ZorkLib {
 			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Rotation(angle, r.Center()));
 		}
 
-		if (tae == TextAlignmentEnum::UpperLeft) {
-			m_DirectX.pContext->DrawTextW(text.c_str(), text.size(), m_DirectX.pTextFormatsLeft[size], r, ToColorBrush(c));
-		} else if (tae == TextAlignmentEnum::Center) {
-			m_DirectX.pContext->DrawTextW(text.c_str(), text.size(), m_DirectX.pTextFormatsCenter[size], r, ToColorBrush(c));
+		switch (tae) {
+			case TextAlignmentEnum::TopLeft:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+				break;
+			case TextAlignmentEnum::Top:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+				break;
+			case TextAlignmentEnum::TopRight:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+				break;
+			case TextAlignmentEnum::Left:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+				break;
+			case TextAlignmentEnum::Center:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+				break;
+			case TextAlignmentEnum::Right:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+				break;
+			case TextAlignmentEnum::BottomLeft:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
+				break;
+			case TextAlignmentEnum::Bottom:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
+				break;
+			case TextAlignmentEnum::BottomRight:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
+				break;
 		}
+
+		m_DirectX.pContext->DrawTextW(text.c_str(), text.size(), m_DirectX.pTextFormats[size], r, ToColorBrush(c));
 
 		if (angle != 0.f) {
 			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Identity());
@@ -148,11 +183,46 @@ namespace ZorkLib {
 			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Rotation(angle, r.Center()));
 		}
 
-		if (tae == TextAlignmentEnum::UpperLeft) {
-			m_DirectX.pContext->DrawTextW(text.c_str(), text.size(), m_DirectX.pTextFormatsLeft[size], r, ToColorBrush(c), D2D1_DRAW_TEXT_OPTIONS_CLIP);
-		} else if (tae == TextAlignmentEnum::Center) {
-			m_DirectX.pContext->DrawTextW(text.c_str(), text.size(), m_DirectX.pTextFormatsCenter[size], r, ToColorBrush(c), D2D1_DRAW_TEXT_OPTIONS_CLIP);
+		switch (tae) {
+			case TextAlignmentEnum::TopLeft:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+				break;
+			case TextAlignmentEnum::Top:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+				break;
+			case TextAlignmentEnum::TopRight:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+				break;
+			case TextAlignmentEnum::Left:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+				break;
+			case TextAlignmentEnum::Center:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+				break;
+			case TextAlignmentEnum::Right:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+				break;
+			case TextAlignmentEnum::BottomLeft:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
+				break;
+			case TextAlignmentEnum::Bottom:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
+				break;
+			case TextAlignmentEnum::BottomRight:
+				m_DirectX.pTextFormats[size]->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+				m_DirectX.pTextFormats[size]->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
+				break;
 		}
+
+		m_DirectX.pContext->DrawTextW(text.c_str(), text.size(), m_DirectX.pTextFormats[size], r, ToColorBrush(c), D2D1_DRAW_TEXT_OPTIONS_CLIP);
 
 		if (angle != 0.f) {
 			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Identity());
@@ -270,21 +340,13 @@ namespace ZorkLib {
 
 			for (UINT32 i = 0; i <= gc_MaxFontSize; ++i) {
 				if (i == 0) {
-					m_DirectX.pTextFormatsLeft.push_back(nullptr);
-					m_DirectX.pTextFormatsCenter.push_back(nullptr);
+					m_DirectX.pTextFormats.push_back(nullptr);
 					continue;
 				}
 				IDWriteTextFormat3* pFormat;
 				hr = m_DirectX.pWriteFactory->CreateTextFormat(L"Consolas", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, static_cast<FLOAT>(i), L"de-DE", (IDWriteTextFormat**) (&pFormat));
 				Exception::AbortIfFailure(hr, L"Failed to create TextFormat.");
-				pFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
-				pFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
-				m_DirectX.pTextFormatsLeft.push_back(pFormat);
-				hr = m_DirectX.pWriteFactory->CreateTextFormat(L"Consolas", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, static_cast<FLOAT>(i), L"de-DE", (IDWriteTextFormat**) (&pFormat));
-				Exception::AbortIfFailure(hr, L"Failed to create TextFormat.");
-				pFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
-				pFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
-				m_DirectX.pTextFormatsCenter.push_back(pFormat);
+				m_DirectX.pTextFormats.push_back(pFormat);
 			}
 
 			ShowWindow(m_DirectX.hWnd, SW_SHOW);
@@ -331,6 +393,10 @@ namespace ZorkLib {
 		WindowLoop([] {return ZorkLib::IsKeyDown(VK_ESCAPE); }, Callback);
 	}
 
+	void Window::WindowLoop(std::function<void(std::chrono::steady_clock::duration)> Callback) {
+		WindowLoop([] {return ZorkLib::IsKeyDown(VK_ESCAPE); }, Callback);
+	}
+
 	void Window::WindowLoop(std::function<bool(void)> ExitCondition) {
 		try {
 			while (!ExitCondition()) {
@@ -360,6 +426,34 @@ namespace ZorkLib {
 				QueryPerformanceCounter(&m_TimerNow);
 				float elap = static_cast<float>(m_TimerNow.QuadPart - m_TimerPrev.QuadPart) / static_cast<float>(m_TimerFreq.QuadPart);
 				m_TimerPrev = m_TimerNow;
+				HandleMessages();
+				Callback(elap);
+				Render();
+			}
+
+		} catch (Exception::HResult & ex) {
+			if (m_CatchExceptions) {
+				DisplayHresultErrorMessageBox(ex.hr, ex.Message);
+			} else {
+				throw ex;
+			}
+		} catch (Exception::Exception & ex) {
+			if (m_CatchExceptions) {
+				MessageBox(NULL, ex.Message.c_str(), L"Error", MB_OK | MB_ICONERROR);
+			} else {
+				throw ex;
+			}
+		}
+
+	}
+
+	void Window::WindowLoop(std::function<bool(void)> ExitCondition, std::function<void(std::chrono::steady_clock::duration)> Callback) {
+		try {
+			m_ChronoPrev = std::chrono::steady_clock::now();
+			while (!ExitCondition()) {
+				m_ChronoNow = std::chrono::steady_clock::now();
+				auto elap = m_ChronoNow - m_ChronoPrev;
+				m_ChronoPrev = m_ChronoNow;
 				HandleMessages();
 				Callback(elap);
 				Render();

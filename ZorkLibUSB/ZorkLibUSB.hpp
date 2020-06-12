@@ -67,7 +67,7 @@ namespace ZorkLib {
 		// ----------------
 
 		// USB Functionality
-		INT32 ControlTransfer();
+		INT32 ControlTransfer(UINT8* buffer, int length);
 		INT32 Write(UINT8 endpoint, UINT8* buffer, int length, int& actual, UINT32 timeout = 1000);
 		INT32 Read(UINT8 endpoint, UINT8* buffer, int length, int& actual, UINT32 timeout = 1000);
 

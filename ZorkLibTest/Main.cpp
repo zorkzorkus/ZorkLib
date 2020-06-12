@@ -8,22 +8,24 @@
 
 using namespace std;
 
-// 100% saturation, 100% value results in colors with one channel = 00, another = ff, last one is between 00 and ff
-ZorkLib::ColorHSV c = ZorkLib::ColorHSV(0.f, 1.f, 1.f);
 
 void Render(ZorkLib::SimpleRenderer& sr) {
-	sr.Fill(c);
+
+
+	sr.FillRectangle(ZorkLib::Rectangle(0, 0, 2560, 1440), ZorkLib::ColorHSV(ZorkLib::ColorEnum::Cyan));
+
 }
 
-void Update(float elap) {
-	c.AddHue(elap * 360.f / 12.f); // takes 12 seconds to complete one color wheel cycle
+void OnKey(UINT32 key, bool down) {
+	if (down) return;
 }
 
 int main() {
 
-	ZorkLib::Window w(L"debugging test");
+	ZorkLib::Window w(ZorkLib::Rectangle::RectMainScreen().Moved(2560.f, 0.f), L"debugging test");
 
 	w.SetSimpleRenderFunction(Render);
-	w.WindowLoop(Update);
+	w.SetKeyEventFunction(OnKey);
+	w.WindowLoop();
 
 }

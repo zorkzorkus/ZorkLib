@@ -52,6 +52,24 @@ namespace ZorkLib {
 			return in;
 		}
 
+		inline float Round(float in, float roundTo) {
+			float f = Wrap(in, 0.f, roundTo);
+			if (2 * f >= roundTo) {
+				return in - f + roundTo;
+			} else {
+				return in - f;
+			}
+		}
+
+		inline UINT32 Round(UINT32 in, UINT32 roundTo) {
+			UINT32 m = in % roundTo;
+			if (2 * m >= roundTo) {
+				return in - m + roundTo;
+			} else {
+				return in - m;
+			}
+		}
+
 		// Splits a string input with string splitter - the substrings are returned in a vector - if there is no occurence of splitter an empty vector is returned.
 		template <typename basic_string>
 		std::vector<basic_string> SplitString(basic_string input, basic_string splitter) {

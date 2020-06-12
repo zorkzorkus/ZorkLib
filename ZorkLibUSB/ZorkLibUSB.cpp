@@ -43,20 +43,27 @@ namespace ZorkLib {
 		++(*m_pReferences);
 	}
 
-	USBDevice& USBDevice::operator=(const USBDevice * other) {
-		// TODO: ?
-		USBDevice retValue(other);
-		return retValue;
+	USBDevice& USBDevice::operator=(const USBDevice* other) {
+		this->~USBDevice();
+		m_pDevice = other->m_pDevice;
+		m_pHandle = other->m_pHandle;
+		m_pReferences = other->m_pReferences;
+		++(*m_pReferences);
+		return *this;
 	}
 
 	USBDevice& USBDevice::operator=(const USBDevice & other) {
-		// TODO: ?
-		USBDevice retValue(other);
-		return retValue;
+		this->~USBDevice();
+		m_pDevice = other.m_pDevice;
+		m_pHandle = other.m_pHandle;
+		m_pReferences = other.m_pReferences;
+		++(*m_pReferences);
+		return *this;
 	}
 
-	INT32 USBDevice::ControlTransfer() {
+	INT32 USBDevice::ControlTransfer(UINT8* buffer, int length) {
 		// TODO
+		//libusb_control_transfer(m_pHandle)
 		return INT32();
 	}
 

@@ -11,6 +11,7 @@
 #include <string>
 #include <functional>
 #include <codecvt>
+#include <chrono>
 
 namespace ZorkLib {
 
@@ -75,8 +76,10 @@ namespace ZorkLib {
 		void Render();
 		void WindowLoop();
 		void WindowLoop(std::function<void(float)> Callback);
+		void WindowLoop(std::function<void(std::chrono::steady_clock::duration)> Callback);
 		void WindowLoop(std::function<bool(void)> ExitCondition);
 		void WindowLoop(std::function<bool(void)> ExitCondition, std::function<void(float)> Callback);
+		void WindowLoop(std::function<bool(void)> ExitCondition, std::function<void(std::chrono::steady_clock::duration)> Callback);
 		void SetSimpleRenderFunction(std::function<void(SimpleRenderer&)> simpleRender);
 		void SetDirectRenderFunction(std::function<void(DirectXAccess&)> directRender);
 		void SetMouseEventFunction(std::function<void(UINT32, INT32, INT32, bool)> mouseEventFunction);
@@ -98,6 +101,7 @@ namespace ZorkLib {
 
 		LARGE_INTEGER m_TimerFreq;
 		LARGE_INTEGER m_TimerNow, m_TimerPrev;
+		std::chrono::steady_clock::time_point m_ChronoPrev, m_ChronoNow;
 
 		UINT32 m_RenderWidth;
 		UINT32 m_RenderHeight;

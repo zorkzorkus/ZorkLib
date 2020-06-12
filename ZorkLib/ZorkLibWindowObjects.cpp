@@ -474,62 +474,49 @@ namespace ZorkLib {
 		float s = colorHSV.GetSaturation();
 		float v = colorHSV.GetValue();
 
-		float p, q, t, ff;
-		int i;
+		float c = v * s;
+		float hp = fmod(h / 60.0, 6);
+		float x = c * (1 - fabs(fmod(hp, 2) - 1));
+		float m = v - c;
 
+		if (0 <= hp && hp < 1) {
+			m_Red = c;
+			m_Green = x;
+			m_Blue = 0;
+		} else if (1 <= hp && hp < 2) {
+			m_Red = x;
+			m_Green = c;
+			m_Blue = 0;
+		} else if (2 <= hp && hp < 3) {
+			m_Red = 0;
+			m_Green = c;
+			m_Blue = x;
+		} else if (3 <= hp && hp < 4) {
+			m_Red = 0;
+			m_Green = x;
+			m_Blue = c;
+		} else if (4 <= hp && hp < 5) {
+			m_Red = x;
+			m_Green = 0;
+			m_Blue = c;
+		} else if (5 <= hp && hp < 6) {
+			m_Red = c;
+			m_Green = 0;
+			m_Blue = x;
+		} else {
+			m_Red = 0;
+			m_Green = 0;
+			m_Blue = 0;
+		}
+
+		m_Red += m;
+		m_Green += m;
+		m_Blue += m;
 		m_Alpha = colorHSV.GetAlpha();
-
-		if (s <= 0.f) {
-			m_Red = v;
-			m_Green = v;
-			m_Blue = v;
-		}
-
-		while (h >= 360.f) h -= 360.f;
-		h /= 60.f;
-		i = static_cast<int>(h);
-		ff = h - i;
-		p = v * (1.f - s);
-		q = v * (1.f - (s * ff));
-		t = v * (1.f - (s * (1.f - ff)));
-
-		switch (i) {
-			case 0:
-				m_Red = v;
-				m_Green = t;
-				m_Blue = p;
-				return;
-			case 1:
-				m_Red = q;
-				m_Green = v;
-				m_Blue = p;
-				return;
-			case 2:
-				m_Red = p;
-				m_Green = v;
-				m_Blue = t;
-				return;
-			case 3:
-				m_Red = p;
-				m_Green = q;
-				m_Blue = v;
-				return;
-			case 4:
-				m_Red = t;
-				m_Green = p;
-				m_Blue = v;
-				return;
-			case 5:
-			default:
-				m_Red = v;
-				m_Green = p;
-				m_Blue = q;
-				return;
-		}
-
 	}
 
-	Color::operator D2D1_COLOR_F() {
+
+	Color::operator D2D1_COLOR_F() const {
 		return D2D1::ColorF(m_Red, m_Green, m_Blue, m_Alpha);
 	}
 
@@ -574,7 +561,11 @@ namespace ZorkLib {
 		return *this;
 	}
 
-	UINT32 Color::GetHex() {
+	bool Color::operator==(const Color& other) const {
+		return GetHex() == other.GetHex();
+	}
+
+	UINT32 Color::GetHex() const {
 		UINT32 r = static_cast<UINT32>(m_Red * 255.f);
 		UINT32 g = static_cast<UINT32>(m_Green * 255.f);
 		UINT32 b = static_cast<UINT32>(m_Blue * 255.f);
@@ -583,19 +574,19 @@ namespace ZorkLib {
 		return result;
 	}
 
-	float Color::GetRed() {
+	float Color::GetRed() const {
 		return m_Red;
 	}
 
-	float Color::GetGreen() {
+	float Color::GetGreen() const {
 		return m_Green;
 	}
 
-	float Color::GetBlue() {
+	float Color::GetBlue() const {
 		return m_Blue;
 	}
 
-	float Color::GetAlpha() {
+	float Color::GetAlpha() const {
 		return m_Alpha;
 	}
 
@@ -693,27 +684,31 @@ namespace ZorkLib {
 
 	}
 
-	ColorHSV::operator D2D1_COLOR_F() {
+	ColorHSV::operator D2D1_COLOR_F() const {
 		return Color(this).operator D2D1_COLOR_F();
 	}
 
-	UINT32 ColorHSV::GetHex() {
+	bool ColorHSV::operator==(const ColorHSV& other) const {
+		return GetHex() == other.GetHex();
+	}
+
+	UINT32 ColorHSV::GetHex() const {
 		return Color(this).GetHex();
 	}
 
-	float ColorHSV::GetHue() {
+	float ColorHSV::GetHue() const {
 		return m_Hue;
 	}
 
-	float ColorHSV::GetSaturation() {
+	float ColorHSV::GetSaturation() const {
 		return m_Saturation;
 	}
 
-	float ColorHSV::GetValue() {
+	float ColorHSV::GetValue() const {
 		return m_Value;
 	}
 
-	float ColorHSV::GetAlpha() {
+	float ColorHSV::GetAlpha() const {
 		return m_Alpha;
 	}
 

@@ -255,7 +255,7 @@ namespace ZorkLib {
 		Color(UINT32 color);
 		Color(ColorHSV colorHSV);
 
-		operator D2D1_COLOR_F();
+		operator D2D1_COLOR_F() const;
 
 		Color operator+(const Color& other);
 		Color& operator+=(const Color& other);
@@ -264,12 +264,14 @@ namespace ZorkLib {
 		Color operator*(const float& scale);
 		Color& operator*=(const float& scale);
 
-		UINT32 GetHex();
+		bool operator==(const Color& other) const;
 
-		float GetRed();
-		float GetGreen();
-		float GetBlue();
-		float GetAlpha();
+		UINT32 GetHex() const;
+
+		float GetRed() const;
+		float GetGreen() const;
+		float GetBlue() const;
+		float GetAlpha() const;
 
 		void SetRed(float red);
 		void SetGreen(float green);
@@ -306,7 +308,7 @@ namespace ZorkLib {
 		ColorHSV(UINT32 color);
 		ColorHSV(Color colorRGB);
 
-		operator D2D1_COLOR_F();
+		operator D2D1_COLOR_F() const;
 
 		// unclear what these operators should do...
 		/*ColorHSV operator+(const ColorHSV& other);
@@ -316,12 +318,14 @@ namespace ZorkLib {
 		ColorHSV operator*(const float& scale);
 		ColorHSV& operator*=(const float& scale);*/
 
-		UINT32 GetHex();
+		bool operator==(const ColorHSV& other) const;
 
-		float GetHue();
-		float GetSaturation();
-		float GetValue();
-		float GetAlpha();
+		UINT32 GetHex() const;
+
+		float GetHue() const;
+		float GetSaturation() const;
+		float GetValue() const;
+		float GetAlpha() const;
 
 		void SetHue(float red);
 		void SetSaturation(float green);
@@ -370,16 +374,15 @@ namespace ZorkLib {
 
 		// DirectWrite
 		IDWriteFactory7* pWriteFactory;
-		std::vector<IDWriteTextFormat3*> pTextFormatsCenter;
-		std::vector<IDWriteTextFormat3*> pTextFormatsLeft;
+		std::vector<IDWriteTextFormat3*> pTextFormats;
 
 	};
 
 	enum class TextAlignmentEnum : UINT32 {
-		UpperLeft, Center
+		TopLeft, Top, TopRight, Left, Center, Right, BottomLeft, Bottom, BottomRight
 	};
 
-	// Yes, we are creating 1000 IDWriteTextFormats here...
+	// Yes, we are creating 4500 IDWriteTextFormats here...
 	constexpr UINT32 gc_MaxFontSize = 500;
 
 }

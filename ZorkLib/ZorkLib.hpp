@@ -21,7 +21,7 @@ Header for binding the correct library
 #ifdef ZORKLIB_HEADER_USB
 #ifdef _DEBUG
 #ifdef _WIN64
-#pragma comment(lib, "ZorkLibUSB64.lib")
+#pragma comment(lib, "ZorkLibUSB64d.lib")
 #else
 #pragma comment(lib, "ZorkLibUSB32d.lib")
 #endif
