@@ -178,6 +178,33 @@ namespace ZorkLib {
 			return res;
 		}
 
+		void SaveTextfileW(std::wstring path, std::vector<std::wstring> text) {
+			std::wofstream ofs(path);
+			if (ofs) {
+				for (auto& ws : text) {
+					ofs << ws << std::endl;
+				}
+			}
+			ofs.close();
+		}
+
+		std::vector<UINT8> LoadBinaryFileW(std::wstring file) {
+			std::vector<UINT8> res;
+			std::ifstream ifs(file, std::ios::binary);
+			if (ifs) {
+				res = std::vector<UINT8>(std::istreambuf_iterator<char>(ifs), {});
+			}
+			return res;
+		}
+
+		void SaveBinaryFileW(std::wstring file, std::vector<UINT8> data) {
+			std::ofstream ofs(file, std::ios::binary);
+			if (ofs) {
+				ofs.write(reinterpret_cast<const char*>(data.data()), data.size());
+			}
+			ofs.close();
+		}
+
 		// ANSI-C Strings
 		//
 		//
@@ -354,7 +381,34 @@ namespace ZorkLib {
 			return res;
 		}
 
-		std::string WidestringToString(std::wstring wstr) {
+		void SaveTextfileA(std::string path, std::vector<std::string> text) {
+			std::ofstream ofs(path);
+			if (ofs) {
+				for (auto& ws : text) {
+					ofs << ws << std::endl;
+				}
+			}
+			ofs.close();
+		}
+
+		std::vector<UINT8> LoadBinaryFileA(std::string file) {
+			std::vector<UINT8> res;
+			std::ifstream ifs(file, std::ios::binary);
+			if (ifs) {
+				res = std::vector<UINT8>(std::istreambuf_iterator<char>(ifs), {});
+			}
+			return res;
+		}
+
+		void SaveBinaryFileA(std::string file, std::vector<UINT8> data) {
+			std::ofstream ofs(file, std::ios::binary);
+			if (ofs) {
+				ofs.write(reinterpret_cast<const char*>(data.data()), data.size());
+			}
+			ofs.close();
+		}
+
+		std::string WideStringToString(std::wstring wstr) {
 			if (wstr.empty()) {
 				return std::string();
 			}
@@ -393,6 +447,10 @@ namespace ZorkLib {
 			return ret;
 		}
 
-	}
+		bool IsKeyDown(UINT32 key) {
+			return static_cast<bool>(GetAsyncKeyState(key) & 0x8000);
+		}
 
-}
+		}
+
+	}

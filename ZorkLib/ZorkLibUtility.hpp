@@ -104,6 +104,9 @@ namespace ZorkLib {
 		std::vector<std::wstring> GetFilesOfPathRecursiveW(std::wstring path, std::function<bool(std::wstring)> filter);
 		std::vector<std::wstring> GetFoldersOfPathRecursiveW(std::wstring path, std::function<bool(std::wstring)> filter);
 		std::vector<std::wstring> LoadTextfileW(std::wstring path);
+		void SaveTextfileW(std::wstring path, std::vector<std::wstring> text);
+		std::vector<UINT8> LoadBinaryFileW(std::wstring file);
+		void SaveBinaryFileW(std::wstring file, std::vector<UINT8> data);
 
 		std::vector<std::string> GetFilesOfPathA(std::string path);
 		std::vector<std::string> GetFoldersOfPathA(std::string path);
@@ -114,9 +117,17 @@ namespace ZorkLib {
 		std::vector<std::string> GetFilesOfPathRecursiveA(std::string path, std::function<bool(std::string)> filter);
 		std::vector<std::string> GetFoldersOfPathRecursiveA(std::string path, std::function<bool(std::string)> filter);
 		std::vector<std::string> LoadTextfileA(std::string path);
+		void SaveTextfileA(std::string path, std::vector<std::string> text);
+		std::vector<UINT8> LoadBinaryFileA(std::string file);
+		void SaveBinaryFileA(std::string file, std::vector<UINT8> data);
+
 
 		std::string WideStringToString(std::wstring ws);
 		std::wstring StringToWideString(std::string s);
+
+
+		bool IsKeyDown(UINT32 key);
+
 
 	}
 

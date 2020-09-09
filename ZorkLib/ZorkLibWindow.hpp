@@ -19,7 +19,6 @@ namespace ZorkLib {
 	// global functions
 	// ----------------
 
-	bool IsKeyDown(UINT32 key);
 	Bitmap LoadBitmap(std::wstring filePath, DirectXAccess* pDirectX);
 
 	// --------------------

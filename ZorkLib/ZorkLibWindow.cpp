@@ -6,10 +6,6 @@ namespace ZorkLib {
 	// global functions
 	// ----------------
 
-	bool IsKeyDown(UINT32 key) {
-		return static_cast<bool>(GetAsyncKeyState(key) & 0x8000);
-	}
-
 	Bitmap LoadBitmap(std::wstring filePath, DirectXAccess* pDirectX) {
 		HRESULT hr = S_OK;
 		IWICBitmapDecoder* pDecoder;
