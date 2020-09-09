@@ -127,6 +127,7 @@ namespace ZorkLib {
 
 
 		bool IsKeyDown(UINT32 key);
+		bool IsKeyUp(UINT32 key);
 
 
 	}

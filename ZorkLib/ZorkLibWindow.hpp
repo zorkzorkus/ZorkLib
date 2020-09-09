@@ -47,6 +47,11 @@ namespace ZorkLib {
 		void RenderText(std::wstring text, Rectangle r, UINT32 size, Color c, float angle = 0.f, TextAlignmentEnum tae = TextAlignmentEnum::Center);
 		void RenderTextClipping(std::wstring text, Rectangle r, UINT32 size, Color c, float angle = 0.f, TextAlignmentEnum tae = TextAlignmentEnum::Center);
 
+		void TransformAdd(D2D_MATRIX_3X2_F transform);
+		void TransformSet(D2D_MATRIX_3X2_F transform);
+		D2D_MATRIX_3X2_F TransformGet();
+		void TransformReset();
+
 	private:
 
 		DirectXAccess& m_DirectX;

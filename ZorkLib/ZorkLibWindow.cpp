@@ -1,5 +1,7 @@
 #include "ZorkLibWindow.hpp"
 
+using namespace ZorkLib::Utility;
+
 namespace ZorkLib {
 
 	// ----------------
@@ -48,9 +50,10 @@ namespace ZorkLib {
 
 	void SimpleRenderer::DrawRectangle(Rectangle rect, Color color, float angle /* = 0.f */, float strokeWidth /* = 1.f */) {
 		if (angle != 0.f) {
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Rotation(angle, rect.Center()));
+			D2D_MATRIX_3X2_F prevTransform = TransformGet();
+			TransformAdd(D2D1::Matrix3x2F::Rotation(angle, rect.Center()));
 			m_DirectX.pContext->DrawRectangle(rect, ToColorBrush(color), strokeWidth);
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Identity());
+			TransformSet(prevTransform);
 		} else {
 			m_DirectX.pContext->DrawRectangle(rect, ToColorBrush(color), strokeWidth);
 		}
@@ -72,9 +75,10 @@ namespace ZorkLib {
 
 	void SimpleRenderer::DrawEllipse(Ellipse ellipse, Color color, float angle /* = 0.f */, float strokeWidth /* = 1.f */) {
 		if (angle != 0.f) {
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Rotation(angle, ellipse.center));
+			D2D_MATRIX_3X2_F prevTransform = TransformGet();
+			TransformAdd(D2D1::Matrix3x2F::Rotation(angle, ellipse.center));
 			m_DirectX.pContext->DrawEllipse(ellipse, ToColorBrush(color), strokeWidth);
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Identity());
+			TransformSet(prevTransform);
 		} else {
 			m_DirectX.pContext->DrawEllipse(ellipse, ToColorBrush(color), strokeWidth);
 		}
@@ -82,9 +86,10 @@ namespace ZorkLib {
 
 	void SimpleRenderer::FillRectangle(Rectangle rect, Color color, float angle /* = 0.f */) {
 		if (angle != 0.f) {
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Rotation(angle, rect.Center()));
+			D2D_MATRIX_3X2_F prevTransform = TransformGet();
+			TransformAdd(D2D1::Matrix3x2F::Rotation(angle, rect.Center()));
 			m_DirectX.pContext->FillRectangle(rect, ToColorBrush(color));
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Identity());
+			TransformSet(prevTransform);
 		} else {
 			m_DirectX.pContext->FillRectangle(rect, ToColorBrush(color));
 		}
@@ -92,9 +97,10 @@ namespace ZorkLib {
 
 	void SimpleRenderer::FillEllipse(Ellipse e, Color c, float angle /* = 0.f */) {
 		if (angle != 0.f) {
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Rotation(angle, e.center));
+			D2D_MATRIX_3X2_F prevTransform = TransformGet();
+			TransformAdd(D2D1::Matrix3x2F::Rotation(angle, e.center));
 			m_DirectX.pContext->FillEllipse(e, ToColorBrush(c));
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Identity());
+			TransformSet(prevTransform);
 		} else {
 			m_DirectX.pContext->FillEllipse(e, ToColorBrush(c));
 		}
@@ -106,9 +112,10 @@ namespace ZorkLib {
 
 	void SimpleRenderer::RenderBitmap(Bitmap bmp, Rectangle rect, float angle /* = 0.f */, float opacity /* = 1.f */) {
 		if (angle != 0.f) {
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Rotation(angle, rect.Center()));
+			D2D_MATRIX_3X2_F prevTransform = TransformGet();
+			TransformAdd(D2D1::Matrix3x2F::Rotation(angle, rect.Center()));
 			m_DirectX.pContext->DrawBitmap(bmp, rect, opacity);
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Identity());
+			TransformSet(prevTransform);
 		} else {
 			m_DirectX.pContext->DrawBitmap(bmp, rect, opacity);
 		}
@@ -119,8 +126,10 @@ namespace ZorkLib {
 			throw std::exception("FontSize to big!");
 		}
 
+		D2D_MATRIX_3X2_F prevTransform;
 		if (angle != 0.f) {
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Rotation(angle, r.Center()));
+			prevTransform = TransformGet();
+			TransformAdd(D2D1::Matrix3x2F::Rotation(angle, r.Center()));
 		}
 
 		switch (tae) {
@@ -165,7 +174,7 @@ namespace ZorkLib {
 		m_DirectX.pContext->DrawTextW(text.c_str(), text.size(), m_DirectX.pTextFormats[size], r, ToColorBrush(c));
 
 		if (angle != 0.f) {
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Identity());
+			TransformSet(prevTransform);
 		}
 
 	}
@@ -175,8 +184,10 @@ namespace ZorkLib {
 			throw std::exception("FontSize to big!");
 		}
 
+		D2D_MATRIX_3X2_F prevTransform;
 		if (angle != 0.f) {
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Rotation(angle, r.Center()));
+			prevTransform = TransformGet();
+			TransformAdd(D2D1::Matrix3x2F::Rotation(angle, r.Center()));
 		}
 
 		switch (tae) {
@@ -221,9 +232,30 @@ namespace ZorkLib {
 		m_DirectX.pContext->DrawTextW(text.c_str(), text.size(), m_DirectX.pTextFormats[size], r, ToColorBrush(c), D2D1_DRAW_TEXT_OPTIONS_CLIP);
 
 		if (angle != 0.f) {
-			m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Identity());
+			TransformSet(prevTransform);
 		}
 
+	}
+
+	void SimpleRenderer::TransformAdd(D2D_MATRIX_3X2_F transform) {
+		D2D_MATRIX_3X2_F temp;
+		m_DirectX.pContext->GetTransform(&temp);
+		temp = transform * temp;
+		m_DirectX.pContext->SetTransform(temp);
+	}
+
+	void SimpleRenderer::TransformSet(D2D_MATRIX_3X2_F transform) {
+		m_DirectX.pContext->SetTransform(transform);
+	}
+
+	D2D_MATRIX_3X2_F SimpleRenderer::TransformGet() {
+		D2D_MATRIX_3X2_F temp;
+		m_DirectX.pContext->GetTransform(&temp);
+		return temp;
+	}
+
+	void SimpleRenderer::TransformReset() {
+		m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Identity());
 	}
 
 	// ------------
@@ -347,13 +379,13 @@ namespace ZorkLib {
 
 			ShowWindow(m_DirectX.hWnd, SW_SHOW);
 
-		} catch (Exception::HResult & ex) {
+		} catch (Exception::HResult& ex) {
 			if (m_CatchExceptions) {
 				DisplayHresultErrorMessageBox(ex.hr, ex.Message);
 			} else {
 				throw ex;
 			}
-		} catch (Exception::Exception & ex) {
+		} catch (Exception::Exception& ex) {
 			if (m_CatchExceptions) {
 				MessageBox(NULL, ex.Message.c_str(), L"Error", MB_OK | MB_ICONERROR);
 			} else {
@@ -382,15 +414,15 @@ namespace ZorkLib {
 	}
 
 	void Window::WindowLoop() {
-		WindowLoop([] {return ZorkLib::IsKeyDown(VK_ESCAPE); });
+		WindowLoop([] {return IsKeyDown(VK_ESCAPE); });
 	}
 
 	void Window::WindowLoop(std::function<void(float)> Callback) {
-		WindowLoop([] {return ZorkLib::IsKeyDown(VK_ESCAPE); }, Callback);
+		WindowLoop([] {return IsKeyDown(VK_ESCAPE); }, Callback);
 	}
 
 	void Window::WindowLoop(std::function<void(std::chrono::steady_clock::duration)> Callback) {
-		WindowLoop([] {return ZorkLib::IsKeyDown(VK_ESCAPE); }, Callback);
+		WindowLoop([] {return IsKeyDown(VK_ESCAPE); }, Callback);
 	}
 
 	void Window::WindowLoop(std::function<bool(void)> ExitCondition) {
@@ -399,13 +431,13 @@ namespace ZorkLib {
 				HandleMessages();
 				Render();
 			}
-		} catch (Exception::HResult & ex) {
+		} catch (Exception::HResult& ex) {
 			if (m_CatchExceptions) {
 				DisplayHresultErrorMessageBox(ex.hr, ex.Message);
 			} else {
 				throw ex;
 			}
-		} catch (Exception::Exception & ex) {
+		} catch (Exception::Exception& ex) {
 			if (m_CatchExceptions) {
 				MessageBox(NULL, ex.Message.c_str(), L"Error", MB_OK | MB_ICONERROR);
 			} else {
@@ -427,13 +459,13 @@ namespace ZorkLib {
 				Render();
 			}
 
-		} catch (Exception::HResult & ex) {
+		} catch (Exception::HResult& ex) {
 			if (m_CatchExceptions) {
 				DisplayHresultErrorMessageBox(ex.hr, ex.Message);
 			} else {
 				throw ex;
 			}
-		} catch (Exception::Exception & ex) {
+		} catch (Exception::Exception& ex) {
 			if (m_CatchExceptions) {
 				MessageBox(NULL, ex.Message.c_str(), L"Error", MB_OK | MB_ICONERROR);
 			} else {
@@ -455,13 +487,13 @@ namespace ZorkLib {
 				Render();
 			}
 
-		} catch (Exception::HResult & ex) {
+		} catch (Exception::HResult& ex) {
 			if (m_CatchExceptions) {
 				DisplayHresultErrorMessageBox(ex.hr, ex.Message);
 			} else {
 				throw ex;
 			}
-		} catch (Exception::Exception & ex) {
+		} catch (Exception::Exception& ex) {
 			if (m_CatchExceptions) {
 				MessageBox(NULL, ex.Message.c_str(), L"Error", MB_OK | MB_ICONERROR);
 			} else {
@@ -514,13 +546,13 @@ namespace ZorkLib {
 	Bitmap Window::LoadBitmap(std::wstring fileName) {
 		try {
 			return ZorkLib::LoadBitmap(fileName, &m_DirectX);
-		} catch (Exception::HResult & ex) {
+		} catch (Exception::HResult& ex) {
 			if (m_CatchExceptions) {
 				DisplayHresultErrorMessageBox(ex.hr, ex.Message);
 			} else {
 				throw ex;
 			}
-		} catch (Exception::Exception & ex) {
+		} catch (Exception::Exception& ex) {
 			if (m_CatchExceptions) {
 				MessageBox(NULL, ex.Message.c_str(), L"Error", MB_OK | MB_ICONERROR);
 			} else {
@@ -580,13 +612,13 @@ namespace ZorkLib {
 			stream->Release();
 			pEncoder->Release();
 
-		} catch (Exception::HResult & ex) {
+		} catch (Exception::HResult& ex) {
 			if (m_CatchExceptions) {
 				DisplayHresultErrorMessageBox(ex.hr, ex.Message);
 			} else {
 				throw ex;
 			}
-		} catch (Exception::Exception & ex) {
+		} catch (Exception::Exception& ex) {
 			if (m_CatchExceptions) {
 				MessageBox(NULL, ex.Message.c_str(), L"Error", MB_OK | MB_ICONERROR);
 			} else {

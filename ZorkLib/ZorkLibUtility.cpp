@@ -451,6 +451,10 @@ namespace ZorkLib {
 			return static_cast<bool>(GetAsyncKeyState(key) & 0x8000);
 		}
 
+		bool IsKeyUp(UINT32 key) {
+			return !IsKeyDown(key);
+		}
+
 		}
 
 	}

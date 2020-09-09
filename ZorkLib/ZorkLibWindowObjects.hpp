@@ -368,6 +368,7 @@ namespace ZorkLib {
 		ID2D1DeviceContext6* pContext;
 		ID2D1Bitmap1* pTargetBitmap;
 		std::map<UINT32, ID2D1SolidColorBrush*> BrushMap;
+		D2D1_MATRIX_3X2_F Transform;
 
 		// IWIC
 		IWICImagingFactory2* pIWICFactory;
