@@ -43,6 +43,13 @@ namespace ZorkLib {
 		++(*m_pReferences);
 	}
 
+	USBDevice::USBDevice(USBDevice&& other) noexcept {
+		m_pDevice = other.m_pDevice;
+		m_pHandle = other.m_pHandle;
+		m_pReferences = other.m_pReferences;
+		memset(&other, 0, sizeof(USBDevice));
+	}
+
 	USBDevice& USBDevice::operator=(const USBDevice* other) {
 		this->~USBDevice();
 		m_pDevice = other->m_pDevice;
@@ -61,10 +68,17 @@ namespace ZorkLib {
 		return *this;
 	}
 
-	INT32 USBDevice::ControlTransfer(UINT8* buffer, int length) {
-		// TODO
-		//libusb_control_transfer(m_pHandle)
-		return INT32();
+	USBDevice& USBDevice::operator=(USBDevice&& other) noexcept {
+		this->~USBDevice();
+		m_pDevice = other.m_pDevice;
+		m_pHandle = other.m_pHandle;
+		m_pReferences = other.m_pReferences;
+		memset(&other, 0, sizeof(USBDevice));
+		return *this;
+	}
+
+	INT32 USBDevice::ControlTransfer(UINT8 bmRequestType, UINT8 bRequest, UINT16 wValue, UINT16 wIndex, UINT16 wLength, UINT8* buffer /*= nullptr*/, UINT32 timeout /*=1000*/) {
+		return libusb_control_transfer(m_pHandle, bmRequestType, bRequest, wValue, wIndex, buffer, wLength, timeout);
 	}
 
 	INT32 USBDevice::Write(UINT8 endpoint, UINT8 * buffer, int length, int& actual, UINT32 timeout) {

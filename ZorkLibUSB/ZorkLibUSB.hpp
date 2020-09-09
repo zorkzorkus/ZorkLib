@@ -57,17 +57,17 @@ namespace ZorkLib {
 		// CopyMove Constructors
 		USBDevice(const USBDevice* other);
 		USBDevice(const USBDevice& other);
-		USBDevice(const USBDevice&& other) = delete; // I don't know how move operation works, so I simply do not allow it...
+		USBDevice(USBDevice&& other) noexcept;
 
 		// Assignment
 		USBDevice& operator=(const USBDevice* other);
 		USBDevice& operator=(const USBDevice& other);
-		USBDevice& operator=(const USBDevice&& other) = delete; // I don't know how move operation works, so I simply do not allow it...
+		USBDevice& operator=(USBDevice&& other) noexcept;
 
 		// ----------------
 
 		// USB Functionality
-		INT32 ControlTransfer(UINT8* buffer, int length);
+		INT32 ControlTransfer(UINT8 bmRequestType, UINT8 bRequest, UINT16 wValue, UINT16 wIndex, UINT16 wLength, UINT8* buffer = nullptr, UINT32 timeout = 1000);
 		INT32 Write(UINT8 endpoint, UINT8* buffer, int length, int& actual, UINT32 timeout = 1000);
 		INT32 Read(UINT8 endpoint, UINT8* buffer, int length, int& actual, UINT32 timeout = 1000);
 
