@@ -52,6 +52,8 @@ namespace ZorkLib {
 		D2D_MATRIX_3X2_F TransformGet();
 		void TransformReset();
 
+		Point GetRenderSize();
+
 	private:
 
 		DirectXAccess& m_DirectX;
@@ -97,6 +99,8 @@ namespace ZorkLib {
 		Bitmap LoadBitmap(std::wstring fileName);
 		void SaveContent(std::wstring fileName);
 		Point GetCursorPos();
+		Rectangle GetWindowRect();
+		Point GetRenderSize();
 		DirectXAccess* GetDirectXAccess();
 
 	private:

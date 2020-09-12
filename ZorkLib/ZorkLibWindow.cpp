@@ -258,6 +258,11 @@ namespace ZorkLib {
 		m_DirectX.pContext->SetTransform(D2D1::Matrix3x2F::Identity());
 	}
 
+	Point SimpleRenderer::GetRenderSize() {
+		auto pixelSize = m_DirectX.pContext->GetPixelSize();
+		return Point(pixelSize.width, pixelSize.height);
+	}
+
 	// ------------
 	// class Window
 	// ------------
@@ -634,6 +639,16 @@ namespace ZorkLib {
 		::GetCursorPos(&p);
 		ScreenToClient(m_DirectX.hWnd, &p);
 		return Point(p.x, p.y);
+	}
+
+	Rectangle Window::GetWindowRect() {
+		RECT rect;
+		::GetWindowRect(m_DirectX.hWnd, &rect);
+		return Rectangle(rect.left, rect.top, rect.right, rect.bottom);
+	}
+
+	Point Window::GetRenderSize() {
+		return m_SimpleRenderer.GetRenderSize();
 	}
 
 	DirectXAccess* Window::GetDirectXAccess() {
