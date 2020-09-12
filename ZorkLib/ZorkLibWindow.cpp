@@ -339,7 +339,7 @@ namespace ZorkLib {
 				D3D_FEATURE_LEVEL_9_1,
 			};
 
-			hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_BGRA_SUPPORT | D3D11_CREATE_DEVICE_SINGLETHREADED, featureLevel, 1, D3D11_SDK_VERSION, &swapChainDesc, &m_DirectX.pSwapChain, &m_DirectX.pD3Device, 0, &m_DirectX.pD3DeviceContext);
+			hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, D3D11_CREATE_DEVICE_BGRA_SUPPORT | D3D11_CREATE_DEVICE_SINGLETHREADED, featureLevel, 7, D3D11_SDK_VERSION, &swapChainDesc, &m_DirectX.pSwapChain, &m_DirectX.pD3Device, 0, &m_DirectX.pD3DeviceContext);
 			Exception::AbortIfFailure(hr, L"Failed to create Window and SwapChain.");
 			hr = m_DirectX.pD3Device->QueryInterface(IID_PPV_ARGS(&m_DirectX.pDXGIDevice));
 			Exception::AbortIfFailure(hr, L"Failed to create DXGIDevice.");
