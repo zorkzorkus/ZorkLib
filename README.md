@@ -12,16 +12,12 @@ This library is work in progress and may change existing parts. Developed using 
 
 #### Requirements
 * Windows (preferably 10)
-* DirectX Feature Level 11.1
 * for ZorkLibUSB: [libusb](https://github.com/libusb/libusb)
 
-
 #### Future Plans
-* GUI elements such as buttons, drop-down lists, auto scaling plots.
+* Integration of [ImGui](https://github.com/ocornut/imgui).
 * Sound using XAudio2.
-* Networking using boost::asio.
 * Anything that is frequently used and has to be programmed again or copied over.
-* Partly port to linux.
 
 #### Limitations
 * Because of the direct usage of WinAPI and DirectX, this library only works on Windows. Ports to other platforms is unlikely.
