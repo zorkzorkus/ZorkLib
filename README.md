@@ -53,3 +53,7 @@ This library is work in progress and may change existing parts. Developed using 
 		window.WindowLoop();
         
 	}
+	
+#### License
+ZorkLib is licensed under MIT, you are free to work with the library how you want to.
+If you find it useful or make some improvements however, I'd be glad to hear from you.
