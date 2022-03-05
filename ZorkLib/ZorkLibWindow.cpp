@@ -37,7 +37,7 @@ namespace ZorkLib {
 		pSource->Release();
 
 		return bmp;
-	}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+	}
 
 	// --------------------
 	// class SimpleRenderer
@@ -292,7 +292,7 @@ namespace ZorkLib {
 			}
 
 			// Window
-			WNDCLASSEX w = {sizeof(WNDCLASSEX)};
+			WNDCLASSEX w = { sizeof(WNDCLASSEX) };
 			w.lpfnWndProc = Window::StaticWindowProcedure;
 			w.style = NULL;
 			w.cbClsExtra = 0;
@@ -309,7 +309,7 @@ namespace ZorkLib {
 			INT32 windowY = static_cast<INT32>(windowRect.top);
 			INT32 windowWidth = static_cast<INT32>(windowRect.Width());
 			INT32 windowHeight = static_cast<INT32>(windowRect.Height());
-			m_DirectX.hWnd = CreateWindowEx(wndExFlags, windowName.c_str(), windowName.c_str(), wndFlags, windowX, windowY, windowWidth, windowHeight, 0, 0, 0, (LPVOID) this);
+			m_DirectX.hWnd = CreateWindowEx(wndExFlags, windowName.c_str(), windowName.c_str(), wndFlags, windowX, windowY, windowWidth, windowHeight, 0, 0, 0, (LPVOID)this);
 
 			Exception::AbortIfFailure(static_cast<bool>(m_DirectX.hWnd), L"Failed to create Window.");
 
@@ -389,7 +389,7 @@ namespace ZorkLib {
 					continue;
 				}
 				IDWriteTextFormat3* pFormat;
-				hr = m_DirectX.pWriteFactory->CreateTextFormat(L"Consolas", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, static_cast<FLOAT>(i), L"de-DE", (IDWriteTextFormat**) (&pFormat));
+				hr = m_DirectX.pWriteFactory->CreateTextFormat(L"Consolas", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, static_cast<FLOAT>(i), L"de-DE", (IDWriteTextFormat**)(&pFormat));
 				Exception::AbortIfFailure(hr, L"Failed to create TextFormat.");
 				m_DirectX.pTextFormats.push_back(pFormat);
 			}
@@ -710,7 +710,7 @@ namespace ZorkLib {
 	}
 
 	void Window::DisplayHresultErrorMessageBox(HRESULT hr, std::wstring msg) {
-		wchar_t errNr[20] = {0};
+		wchar_t errNr[20] = { 0 };
 		auto aError = std::system_category().message(hr);
 		auto wError = Utility::StringToWideString(aError);
 		_itow_s(hr, errNr, 16);
@@ -796,7 +796,7 @@ namespace ZorkLib {
 	LRESULT Window::StaticWindowProcedure(HWND hWnd, UINT32 msg, WPARAM w, LPARAM l) {
 		if (msg == WM_NCCREATE) {
 			CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(l);
-			SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR) cs->lpCreateParams);
+			SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)cs->lpCreateParams);
 			return TRUE;
 		} else {
 			LONG_PTR wndPtr = GetWindowLongPtr(hWnd, GWLP_USERDATA);
