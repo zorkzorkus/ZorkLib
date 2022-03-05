@@ -68,15 +68,30 @@ namespace ZorkLib {
 
 	public:
 
+		// Constructors
 		Window(std::wstring windowName);
 		Window(Rectangle windowRect, std::wstring windowName);
 		Window(Rectangle windowRect, UINT32 renderWidth, UINT32 renderHeight, std::wstring windowName);
 		Window(Rectangle windowRect, UINT32 renderWidth, UINT32 renderHeight, std::wstring windowName, DWORD wndFlags, DWORD wndExFlags);
 
+		// Destructor
+		~Window();
+
+		// Copy Constructors
 		Window(const Window&) = delete;
 		Window(const Window*) = delete;
+
+		// Move Constructors
 		Window(const Window&&) = delete;
+
+		// Assignment Operators
 		Window& operator=(const Window&) = delete;
+		Window& operator=(const Window&& rval) = delete;
+
+		// Alternative Constructors
+		static std::shared_ptr<Window> TransparentWindow(std::wstring windowName);
+		static std::shared_ptr<Window> TransparentWindow(std::wstring windowName, Rectangle windowRect);
+		static std::shared_ptr<Window> TransparentWindow(std::wstring windowName, Rectangle windowRect, UINT32 renderWidth, UINT32 renderHeight);
 
 		void HandleMessages();
 		void Render();

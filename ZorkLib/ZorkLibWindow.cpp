@@ -1,5 +1,11 @@
 #include "ZorkLibWindow.hpp"
 
+static void SafeRelease(IUnknown* f) {
+	if (f) {
+		f->Release();
+	}
+};
+
 using namespace ZorkLib::Utility;
 
 namespace ZorkLib {
@@ -31,7 +37,7 @@ namespace ZorkLib {
 		pSource->Release();
 
 		return bmp;
-	}
+	}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 
 	// --------------------
 	// class SimpleRenderer
@@ -307,6 +313,12 @@ namespace ZorkLib {
 
 			Exception::AbortIfFailure(static_cast<bool>(m_DirectX.hWnd), L"Failed to create Window.");
 
+			if (wndExFlags & WS_EX_TRANSPARENT) {
+				const MARGINS margin = { -1 };
+				SetLayeredWindowAttributes(m_DirectX.hWnd, RGB(0, 0, 0), 255, ULW_COLORKEY | LWA_ALPHA);
+				DwmExtendFrameIntoClientArea(m_DirectX.hWnd, &margin);
+			}
+
 			// DirectX
 			DXGI_MODE_DESC mode;
 			mode.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
@@ -398,6 +410,48 @@ namespace ZorkLib {
 			}
 		}
 
+	}
+
+	Window::~Window() {
+		// Release all DirectX devices in reverse order
+
+		auto& d = m_DirectX;
+
+		for (auto& f : d.pTextFormats) {
+			SafeRelease(f);
+		}
+
+		SafeRelease(d.pWriteFactory);
+		SafeRelease(d.pIWICFactory);
+
+		for (auto& b : d.BrushMap) {
+			SafeRelease(b.second);
+		}
+		SafeRelease(d.pTargetBitmap);
+		SafeRelease(d.pContext);
+		SafeRelease(d.pDevice);
+		SafeRelease(d.pD2Factory);
+
+		SafeRelease(d.pD3DeviceContext);
+		SafeRelease(d.pD3Device);
+
+		SafeRelease(d.pBackBuffer);
+		SafeRelease(d.pDXGIDevice);
+		SafeRelease(d.pSwapChain);
+
+		DestroyWindow(d.hWnd);
+	}
+
+	std::shared_ptr<Window> Window::TransparentWindow(std::wstring windowName) {
+		return TransparentWindow(windowName, Rectangle::RectMainScreen());
+	}
+
+	std::shared_ptr<Window> Window::TransparentWindow(std::wstring windowName, Rectangle windowRect) {
+		return TransparentWindow(windowName, windowRect, static_cast<UINT32>(windowRect.Width()), static_cast<UINT32>(windowRect.Height()));
+	}
+
+	std::shared_ptr<Window> Window::TransparentWindow(std::wstring windowName, Rectangle windowRect, UINT32 renderWidth, UINT32 renderHeight) {
+		return std::make_shared<Window>(windowRect, renderWidth, renderHeight, windowName, WS_POPUP, WS_EX_TRANSPARENT | WS_EX_LAYERED | WS_EX_TOPMOST);
 	}
 
 	void Window::HandleMessages() {

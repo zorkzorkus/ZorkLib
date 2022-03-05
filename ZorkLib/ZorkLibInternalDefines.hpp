@@ -6,6 +6,7 @@
 #pragma comment(lib, "windowscodecs")
 #pragma comment(lib, "dwrite")
 #pragma comment(lib, "Shlwapi")
+#pragma comment(lib, "dwmapi")
 
 #ifndef UNICODE
 #define UNICODE
@@ -20,6 +21,7 @@
 #include <wincodec.h>
 #include <dwrite_3.h>
 #include <Shlwapi.h>
+#include <dwmapi.h>
 
 #include <memory>
 #include <string>
