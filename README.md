@@ -4,7 +4,9 @@ This library is work in progress and may change existing parts. Developed using 
 
 #### Features
 * ZorkLib/Window 
-	* Create a Window that provides a KeyDown, MouseDown framework with simplified Direct2D rendering. Allows access to underlying functionality.
+	* Create a Window that provides a KeyDown, MouseDown framework with simplified Direct2D rendering.
+	* Allows transparent windows for overlays (i.e. can not be clicked on, always on top)
+	* Allows access to underlying functionality.
 * ZorkLibUSB
 	* Easier access to USB devices using **libusb**. Supports opening device via VID, PID, Serial Number. Writing and reading data through control and bulk transactions.
 * ZorkLib/Utility
