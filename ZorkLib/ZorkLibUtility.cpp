@@ -455,6 +455,47 @@ namespace ZorkLib {
 			return !IsKeyDown(key);
 		}
 
+		void SendKeyInputScan(UINT32 sKey, bool down) {
+			INPUT input;
+			input.type = INPUT_KEYBOARD;
+			input.ki.wScan = 0;
+			input.ki.time = 0;
+			input.ki.dwExtraInfo = 0;
+			input.ki.wVk = sKey;
+			input.ki.dwFlags = (down) ? 0 : KEYEVENTF_KEYUP;
+			SendInput(1, &input, sizeof(INPUT));
+		}
+
+		void SendKeyInputVirtA(WORD vKey, bool down) {
+			INPUT input;
+			input.type = INPUT_KEYBOARD;
+			input.ki.wScan = LOWORD(MapVirtualKeyA(vKey, MAPVK_VK_TO_VSC));
+			input.ki.time = 0;
+			input.ki.dwExtraInfo = 0;
+			input.ki.wVk = vKey;
+			if (vKey >= VK_LEFT && vKey <= VK_DOWN) {
+				input.ki.dwFlags = (down) ? KEYEVENTF_EXTENDEDKEY : KEYEVENTF_KEYUP | KEYEVENTF_EXTENDEDKEY;
+			} else {
+				input.ki.dwFlags = (down) ? 0 : KEYEVENTF_KEYUP;
+			}
+			SendInput(1, &input, sizeof(INPUT));
+		}
+
+		void SendKeyInputVirtW(UINT32 vKey, bool down) {
+			INPUT input;
+			input.type = INPUT_KEYBOARD;
+			input.ki.wScan = LOWORD(MapVirtualKeyW(vKey, MAPVK_VK_TO_VSC));
+			input.ki.time = 0;
+			input.ki.dwExtraInfo = 0;
+			input.ki.wVk = vKey;
+			if (vKey >= VK_LEFT && vKey <= VK_DOWN) {
+				input.ki.dwFlags = (down) ? KEYEVENTF_EXTENDEDKEY : KEYEVENTF_KEYUP | KEYEVENTF_EXTENDEDKEY;
+			} else {
+				input.ki.dwFlags = (down) ? 0 : KEYEVENTF_KEYUP;
+			}
+			SendInput(1, &input, sizeof(INPUT));
 		}
 
 	}
+
+}

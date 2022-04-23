@@ -3,9 +3,12 @@
 #include <string>
 #include <vector>
 #include <queue>
-#include <Windows.h>
+#include <chrono>
+#include <thread>
 #include <functional>
 #include <fstream>
+
+#include <Windows.h>
 
 #ifdef ZORKLIB_USE_UNICODE_MACROS
 #ifdef UNICODE
@@ -14,12 +17,14 @@
 #define GetFilesOfPathRecursive GetFilesOfPathRecursiveW
 #define GetFoldersOfPathRecursive GetFoldersOfPathRecursiveW
 #define LoadTextfile LoadTextfileW
+#define SendKeyInputVirt SendKeyInputVirtW
 #else // UNICODE
 #define GetFilesOfPath GetFilesOfPathA
 #define GetFoldersOfPath GetFoldersOfPathA
 #define GetFilesOfPathRecursive GetFilesOfPathRecursiveA
 #define GetFoldersOfPathRecursive GetFoldersOfPathRecursiveA
 #define LoadTextfile LoadTextfileA
+#define SendKeyInputVirt SendKeyInputVirtA
 #endif // UNICODE
 #endif // ZORKLIB_USE_UNICODE_MACROS
 
@@ -129,6 +134,55 @@ namespace ZorkLib {
 		bool IsKeyDown(UINT32 key);
 		bool IsKeyUp(UINT32 key);
 
+		void SendKeyInputScan(UINT32 sKey, bool down);
+		void SendKeyInputVirtA(UINT32 vKey, bool down);
+		void SendKeyInputVirtW(UINT32 vKey, bool down);
+
+		template <typename duration>
+		void BusySleep(duration d) {
+			auto n = std::chrono::steady_clock::now();
+			while (std::chrono::steady_clock::now() - n < d);
+		}
+
+
+		template <typename duration>
+		void KeyInputScan(UINT32 sKey, duration down, duration up) {
+			SendKeyInputScan(sKey, true);
+			BusySleep(down / 2);
+			SendKeyInputScan(sKey, false);
+			BusySleep(up / 2);
+		}
+
+		template <typename duration, typename >
+		void KeyInputScan(UINT32 sKey, duration time) {
+			KeyInputScan(sKey, time/2, time/2);
+		}
+
+		template <typename duration>
+		void KeyInputVirtA(UINT32 vKey, duration down, duration up) {
+			SendKeyInputVirtA(vKey, true);
+			BusySleep(down / 2);
+			SendKeyInputVirtA(vKey, false);
+			BusySleep(up / 2);
+		}
+
+		template <typename duration>
+		void KeyInputVirtW(UINT32 vKey, duration down, duration up) {
+			SendKeyInputVirtW(vKey, true);
+			BusySleep(down / 2);
+			SendKeyInputVirtW(vKey, false);
+			BusySleep(up / 2);
+		}
+
+		template <typename duration>
+		void KeyInputVirtA(UINT32 vKey, duration time) {
+			KeyInputVirtA(vKey, time / 2, time / 2);
+		}
+
+		template <typename duration>
+		void KeyInputVirtW(UINT32 vKey, duration time) {
+			KeyInputVirtW(vKey, time / 2, time / 2);
+		}
 
 	}
 
