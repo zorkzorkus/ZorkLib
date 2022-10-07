@@ -315,7 +315,7 @@ namespace ZorkLib {
 
 			if (wndExFlags & WS_EX_TRANSPARENT) {
 				const MARGINS margin = { -1 };
-				SetLayeredWindowAttributes(m_DirectX.hWnd, RGB(0, 0, 0), 255, ULW_COLORKEY | LWA_ALPHA);
+				SetLayeredWindowAttributes(m_DirectX.hWnd, 0xff000000, 255, LWA_ALPHA);
 				DwmExtendFrameIntoClientArea(m_DirectX.hWnd, &margin);
 			}
 
